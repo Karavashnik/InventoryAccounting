@@ -1,16 +1,17 @@
 ﻿using System;
 using InventoryAccounting.Models.DB;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.IdentityModel.Protocols;
 
-namespace InventoryAccounting
+namespace InventoryAccounting.Models
 {
-    public partial class InventoryAccountingContext : DbContext
+    public partial class InventoryAccountingContext : IdentityDbContext<User>
     {
         public InventoryAccountingContext(DbContextOptions<InventoryAccountingContext> options)
             : base(options)
-        {
+        {   
             Database.EnsureCreated();
         }
 
@@ -23,6 +24,9 @@ namespace InventoryAccounting
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // Скорее всего это отсутствует
+            //modelBuilder.Ignore<identityuserclaim<string>>(); //Отключить то что не нужно
+            //modelBuilder.Ignore<identityusertoken<string>>();//Отключить то что не нужно
             modelBuilder.Entity<Acts>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();

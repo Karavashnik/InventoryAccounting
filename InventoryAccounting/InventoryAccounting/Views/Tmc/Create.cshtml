@@ -1,0 +1,78 @@
+﻿@model InventoryAccounting.Models.DB.Tmc
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Tmc</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InventoryNumber" class="control-label"></label>
+                <input asp-for="InventoryNumber" class="form-control" />
+                <span asp-validation-for="InventoryNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseDate" class="control-label"></label>
+                <input asp-for="PurchaseDate" class="form-control" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesponsiblePersonNumber" class="control-label"></label>
+                <select asp-for="PesponsiblePersonNumber" class ="form-control" asp-items="ViewBag.PesponsiblePersonNumber"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FactoryNumber" class="control-label"></label>
+                <input asp-for="FactoryNumber" class="form-control" />
+                <span asp-validation-for="FactoryNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WriteOffDate" class="control-label"></label>
+                <input asp-for="WriteOffDate" class="form-control" />
+                <span asp-validation-for="WriteOffDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomId" class="control-label"></label>
+                <select asp-for="RoomId" class ="form-control" asp-items="ViewBag.RoomId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActId" class="control-label"></label>
+                <select asp-for="ActId" class ="form-control" asp-items="ViewBag.ActId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="WarrantyDate" class="control-label"></label>
+                <input asp-for="WarrantyDate" class="form-control" />
+                <span asp-validation-for="WarrantyDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

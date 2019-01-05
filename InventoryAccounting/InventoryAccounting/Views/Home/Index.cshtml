@@ -1,13 +1,4 @@
-﻿@model IEnumerable<InventoryAccounting.Models.DB.Tmc>
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
-<table class="table">
-    <caption>Товарно-материальные ценности</caption>
-    <tr><td>Название</td><td>Ответственное лицо</td><td>Этаж</td></tr>
-    @foreach (var item in Model)
-    {
-        <tr><td>@item.Name</td><td>@item.InventoryNumber</td><td>@item.PurchaseDate</td></tr>
-    }
-</table>
-<button type="button" class="btn btn-primary">Primary</button>
+

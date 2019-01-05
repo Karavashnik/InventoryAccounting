@@ -1,0 +1,79 @@
+﻿@model InventoryAccounting.Models.DB.Tmc
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tmc</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PurchaseDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PurchaseDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FactoryNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FactoryNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WriteOffDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WriteOffDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WarrantyDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WarrantyDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Act)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Act.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PesponsiblePersonNumberNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PesponsiblePersonNumberNavigation.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Room)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Room.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InventoryNumber">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

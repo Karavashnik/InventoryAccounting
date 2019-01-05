@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using InventoryAccounting.Models
+@inject SignInManager<User> SignInManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul>
+        <li><a asp-area="" asp-controller="Tmc" asp-action="Index">Товарно-материальные ценности</a></li>
+        <li><a asp-area="" asp-controller="ResponsiblePersons" asp-action="Index">Ответственные лица</a></li>
+        <li><a asp-area="" asp-controller="Rooms" asp-action="Index">Помещения</a></li>
+        <li><a asp-area="" asp-controller="Acts" asp-action="Index">Акты</a></li>
+        <li><a asp-area="" asp-controller="Contracts" asp-action="Index">Контракты</a></li>
+        <li><a asp-area="" asp-controller="CompanyNames" asp-action="Index">Компании</a></li>
+    </ul>
+}
+else
+{
+
+}

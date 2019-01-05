@@ -17,9 +17,9 @@ namespace InventoryAccounting.Controllers
         {
             db = context;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await db.Tmc.ToListAsync());
+            return View();
         }
 
         public IActionResult About()

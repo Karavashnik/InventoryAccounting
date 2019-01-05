@@ -107,6 +107,9 @@ namespace InventoryAccounting
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "inventory",
+                    template: "{controller=Inventory}/{action=Index}/{id?}");
             });
         }
     }

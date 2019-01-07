@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using InventoryAccounting.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
+    [ModelMetadataType(typeof(ResponsiblePersonsMetaData))]
     public partial class ResponsiblePersons
     {
         public ResponsiblePersons()

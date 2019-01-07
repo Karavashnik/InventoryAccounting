@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
+    [ModelMetadataType(typeof(ActsMetaData))]
     public partial class Acts
     {
         public Acts()

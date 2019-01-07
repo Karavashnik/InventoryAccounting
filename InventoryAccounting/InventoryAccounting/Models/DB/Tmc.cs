@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
+    [ModelMetadataType(typeof(TmcMetaData))]
     public partial class Tmc
     {
         public int InventoryNumber { get; set; }

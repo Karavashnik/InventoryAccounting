@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,22 +28,15 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: TmcController/Details/5
+        [HttpGet("Tmc/Details/{id}")]
+        [ValidateTmcExists]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var tmc = await _context.Tmc
                 .Include(t => t.Act)
                 .Include(t => t.PesponsiblePersonNumberNavigation)
                 .Include(t => t.Room)
                 .FirstOrDefaultAsync(m => m.InventoryNumber == id);
-            if (tmc == null)
-            {
-                return NotFound();
-            }
 
             return View(tmc);
         }
@@ -61,6 +55,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[ValidateModel]
         public async Task<IActionResult> Create([Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonNumber,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             if (ModelState.IsValid)
@@ -69,6 +64,7 @@ namespace InventoryAccounting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ActId"] = new SelectList(_context.Acts, "Id", "Id", tmc.ActId);
             ViewData["PesponsiblePersonNumber"] = new SelectList(_context.ResponsiblePersons, "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", tmc.RoomId);
@@ -76,13 +72,10 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: TmcController/Edit/5
+        [HttpGet("Tmc/Edit/{id}")]
+        [ValidateTmcExists]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var tmc = await _context.Tmc.FindAsync(id);
             if (tmc == null)
             {
@@ -99,6 +92,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[ValidateModel]
         public async Task<IActionResult> Edit(int id, [Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonNumber,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             if (id != tmc.InventoryNumber)
@@ -133,22 +127,15 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: TmcController/Delete/5
+        [HttpGet("Tmc/Delete/{id}")]
+        [ValidateTmcExists]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var tmc = await _context.Tmc
                 .Include(t => t.Act)
                 .Include(t => t.PesponsiblePersonNumberNavigation)
                 .Include(t => t.Room)
                 .FirstOrDefaultAsync(m => m.InventoryNumber == id);
-            if (tmc == null)
-            {
-                return NotFound();
-            }
 
             return View(tmc);
         }

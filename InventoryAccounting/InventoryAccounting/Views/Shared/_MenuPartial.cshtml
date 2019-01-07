@@ -3,16 +3,16 @@
 @inject SignInManager<User> SignInManager
 @if (SignInManager.IsSignedIn(User))
 {
-    <ul>
-        <li><a asp-area="" asp-controller="Tmc" asp-action="Index">Товарно-материальные ценности</a></li>
-        <li><a asp-area="" asp-controller="ResponsiblePersons" asp-action="Index">Ответственные лица</a></li>
-        <li><a asp-area="" asp-controller="Rooms" asp-action="Index">Помещения</a></li>
-        <li><a asp-area="" asp-controller="Acts" asp-action="Index">Акты</a></li>
-        <li><a asp-area="" asp-controller="Contracts" asp-action="Index">Контракты</a></li>
-        <li><a asp-area="" asp-controller="CompanyNames" asp-action="Index">Компании</a></li>
-    </ul>
-}
-else
-{
 
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+    <div class="dropdown-menu">
+        <a asp-area="" asp-controller="Tmc" asp-action="Index" class="dropdown-item" id="tmc-tab" >Товарно-материальные ценности</a>
+        <a asp-area="" asp-controller="ResponsiblePersons" asp-action="Index" class="dropdown-item">Ответственные лица</a>
+        <a asp-area="" asp-controller="Rooms" asp-action="Index" class="dropdown-item">Помещения</a>
+        <a asp-area="" asp-controller="Acts" asp-action="Index" class="dropdown-item">Акты</a>
+        <a asp-area="" asp-controller="Contracts" asp-action="Index" class="dropdown-item">Контракты</a>
+        <a asp-area="" asp-controller="CompanyNames" asp-action="Index" class="dropdown-item">Компании</a>
+    </div>
+</li>
 }

@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - InventoryAccounting</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <!--<link rel="stylesheet" href="~/css/site.css" />-->
+        <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
         
@@ -15,7 +15,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <!--<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />-->
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
@@ -29,6 +29,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">О сайте</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Контакты</a></li>
+                    <partial name="_MenuPartial" />
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
@@ -36,22 +37,25 @@
     </nav>
     
 <partial name="_CookieConsentPartial"/>
-<partial name="_MenuPartial"/>
+
 
 <div class="container">
-    @RenderBody()
-    <hr/>
-    <footer class="navbar navbar-light fixed-bottom d-flex justify-content-center">
-        <!-- Copyright -->
-        <div class="text-center py-3">© 2019 Copyright InventoryAccounting</div>
-        <!-- Copyright -->
-    </footer>
+    <div class="row">
+        <div class="col-12">
+            @RenderBody()
+        </div>
+    </div>
 </div>
+<footer class="navbar bg-light fixed-bottom border-top">
+    <div class="container d-flex justify-content-center">
+        <span>© 2019 Copyright InventoryAccounting</span>
+    </div>
+</footer>
 
 <environment include="Development">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <!--<script src="~/js/site.js" asp-append-version="true"></script>-->
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </environment>
 <environment exclude="Development">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -67,7 +71,7 @@
             crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <!--<script src="~/js/site.min.js" asp-append-version="true"></script>-->
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>
 
 @RenderSection("Scripts", required: false)

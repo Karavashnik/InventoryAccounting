@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using InventoryAccounting.Models;
-using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace InventoryAccounting.Models.DB
 {
-    [ModelMetadataType(typeof(RoomsMetaData))]
-    public partial class Rooms
+    public class RoomsMetaData
     {
-        public Rooms()
-        {
-            Tmc = new HashSet<Tmc>();
-        }
-
         public Guid Id { get; set; }
+        [Display(Name = "Название")]
         public string Name { get; set; }
+        [Display(Name = "Этаж")]
         public int Floor { get; set; }
+        [Display(Name = "Номер")]
         public int Number { get; set; }
+        [Display(Name = "Номер телефона")]
         public string Phone { get; set; }
 
         public ICollection<Tmc> Tmc { get; set; }

@@ -4,87 +4,96 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FactoryNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WriteOffDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WarrantyDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Act)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PesponsiblePersonNumberNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Room)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FactoryNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WriteOffDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WarrantyDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Act.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PesponsiblePersonNumberNavigation.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InventoryNumber">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InventoryNumber">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InventoryNumber">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="container-fluid my-2">
+        <div class="row">
+            <h2>Товарно-материальные ценности</h2>
+            <a asp-action="Create" class="fas fa-plus-circle fa-3x ml-auto text-dark"></a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.InventoryNumber)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.PurchaseDate)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.FactoryNumber)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.WriteOffDate)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.WarrantyDate)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Act)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.PesponsiblePersonNumberNavigation)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Room)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InventoryNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PurchaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FactoryNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WriteOffDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WarrantyDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Act.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PesponsiblePersonNumberNavigation.FirstName) @Html.DisplayFor(modelItem => item.PesponsiblePersonNumberNavigation.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Room.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.InventoryNumber" class="far fa-edit text-dark fa-2x"></a> 
+                        <a asp-action="Details" asp-route-id="@item.InventoryNumber" class="fas fa-info-circle text-dark fa-2x"></a> 
+                        <a asp-action="Delete" asp-route-id="@item.InventoryNumber" class="far fa-trash-alt text-dark fa-2x"></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

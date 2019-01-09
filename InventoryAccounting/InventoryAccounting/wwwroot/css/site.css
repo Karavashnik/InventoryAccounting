@@ -1,3 +1,6 @@
 ﻿body {
     padding-bottom: 60px;
 }
+a:hover {
+    text-decoration: none;
+}

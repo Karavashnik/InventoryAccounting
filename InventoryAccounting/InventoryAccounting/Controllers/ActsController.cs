@@ -152,6 +152,12 @@ namespace InventoryAccounting.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult ModalAction()
+        {
+            //ViewBag.Id = id;
+            return PartialView("Modal");
+        }
+
         private bool ActsExists(int id)
         {
             return _context.Acts.Any(e => e.Id == id);

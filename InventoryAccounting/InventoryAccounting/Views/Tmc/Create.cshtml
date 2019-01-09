@@ -4,36 +4,40 @@
     ViewData["Title"] = "Добавить";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div id="modDialog" class="modal fade">
-    <div id="dialogContent" class="modal-dialog"></div>
+<div id="modal-container" class="modal fade bd-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
 </div>
 <div class="row my-2">
     <div class="col-md-12">
         <h2>Добавление товарно-материальных ценностей</h2>
-        <hr />
+        <hr/>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label asp-for="InventoryNumber" class="col-form-label"></label>
-                    <input asp-for="InventoryNumber" class="form-control" />
+                    <input asp-for="InventoryNumber" class="form-control"/>
                     <span asp-validation-for="InventoryNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label asp-for="FactoryNumber" class="col-form-label"></label>
-                    <input asp-for="FactoryNumber" class="form-control" />
+                    <input asp-for="FactoryNumber" class="form-control"/>
                     <span asp-validation-for="FactoryNumber" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label asp-for="Name" class="col-form-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control"/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label asp-for="Type" class="col-form-label"></label>
-                    <input asp-for="Type" class="form-control" />
+                    <input asp-for="Type" class="form-control"/>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
             </div>
@@ -45,17 +49,17 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label asp-for="PurchaseDate" class="col-form-label"></label>
-                    <input asp-for="PurchaseDate" type="date" class="form-control" />
+                    <input asp-for="PurchaseDate" type="date" class="form-control"/>
                     <span asp-validation-for="PurchaseDate" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-4">
                     <label asp-for="WriteOffDate" class="col-form-label"></label>
-                    <input asp-for="WriteOffDate" type="date" class="form-control" />
+                    <input asp-for="WriteOffDate" type="date" class="form-control"/>
                     <span asp-validation-for="WriteOffDate" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-4">
                     <label asp-for="WarrantyDate" class="col-form-label"></label>
-                    <input asp-for="WarrantyDate" type="date" class="form-control" />
+                    <input asp-for="WarrantyDate" type="date" class="form-control"/>
                     <span asp-validation-for="WarrantyDate" class="text-danger"></span>
                 </div>
             </div>
@@ -83,13 +87,13 @@
                     <div class="input-group">
                         <select asp-for="ActId" class="custom-select" asp-items="ViewBag.ActId"></select>
                         <div class="input-group-append">
-                            <a asp-controller="Acts" asp-action="ModalAction" class="add-btn btn btn-outline-secondary" asp-route-id="1" data-target="#modal-container" data-toggle="modal">Добавить</a>
+                            <a asp-controller="Acts" asp-action="CreateModal" asp-route-action="Acts/Create" class="btn btn-outline-secondary" data-target=".bd-modal-xl" data-toggle="modal">Добавить</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Добавить" class="btn btn-dark  mr-1" />
+                <input type="submit" value="Добавить" class="btn btn-dark  mr-1"/>
                 <a asp-action="Index" class="btn btn-dark">Назад</a>
             </div>
         </form>
@@ -98,18 +102,26 @@
 @section scripts
 {
     <script type="text/javascript">
- 
+
+        $('#modal-container').modal('handleUpdate');
         $(function () {
-            $.ajaxSetup({ cache: false });
-            $(".add-btn").click(function (e) {
- 
-                e.preventDefault();
-                $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
-                });
+            // when the modal is closed
+            $('#modal-container').on('hidden.bs.modal', function () {
+                // remove the bs.modal data attribute from it
+                $(this).removeData('bs.modal');
+                // and empty the modal-content element
+                $('#modal-container .modal-content').empty();
             });
-        })
+        });
+        // boostrap 4 load modal example from docs
+        $('#modal-container').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var url = button.attr("href");
+            var modal = $(this);
+
+            // note that this will replace the content of modal-content ever time the modal is opened
+            modal.find('.modal-content').load(url);
+        });
     </script>
 }
 

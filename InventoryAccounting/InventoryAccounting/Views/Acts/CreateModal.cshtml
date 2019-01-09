@@ -1,0 +1,36 @@
+﻿@model InventoryAccounting.Models.DB.Acts
+
+<div class="modal-header">
+    <h5 class="modal-title">Добавление акта</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="CreateModal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Id" class="col-form-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CompilationDate" class="col-form-label"></label>
+                    <input asp-for="CompilationDate" class="form-control" type="date"/>
+                    <span asp-validation-for="CompilationDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ContractNumber" class="col-form-label"></label>
+                    <select asp-for="ContractNumber" class ="form-control" asp-items="ViewBag.ContractNumber"></select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

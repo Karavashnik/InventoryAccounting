@@ -152,10 +152,25 @@ namespace InventoryAccounting.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult ModalAction()
+        
+        public ActionResult CreateModal()
         {
-            //ViewBag.Id = id;
-            return PartialView("Modal");
+            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber");
+            return PartialView("CreateModal");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async void CreateModal([Bind("Id,CompilationDate,ContractNumber")] Acts acts)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(acts);
+                await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+            }
+            //ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
+            //return View(acts);
         }
 
         private bool ActsExists(int id)

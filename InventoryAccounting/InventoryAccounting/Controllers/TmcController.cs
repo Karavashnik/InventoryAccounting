@@ -13,40 +13,34 @@ namespace InventoryAccounting.Controllers
 {
     public class TmcController : Controller
     {
-        private readonly InventoryAccountingContext _context;
+        private ITmcDataAccessLayer _tmcs;
 
+        //private readonly InventoryAccountingContext _context;
         public TmcController(InventoryAccountingContext context)
         {
-            _context = context;
+            _tmcs = new DataAccessLayer(context);
         }
 
         // GET: TmcController
         public async Task<IActionResult> Index()
         {
-            var inventoryAccountingContext = _context.Tmc.Include(t => t.Act).Include(t => t.PesponsiblePersonNumberNavigation).Include(t => t.Room);
-            return View(await inventoryAccountingContext.ToListAsync());
+            return View( await _tmcs.GetAllTmc());
         }
 
         // GET: TmcController/Details/5
         [HttpGet("Tmc/Details/{id}")]
         [ValidateTmcExists]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            var tmc = await _context.Tmc
-                .Include(t => t.Act)
-                .Include(t => t.PesponsiblePersonNumberNavigation)
-                .Include(t => t.Room)
-                .FirstOrDefaultAsync(m => m.InventoryNumber == id);
-
-            return View(tmc);
+            return View(await _tmcs.GetTmcById(id));
         }
 
         // GET: TmcController/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ActId"] = new SelectList(_context.Acts, "Id", "Id");
-            ViewData["PesponsiblePersonNumber"] = new SelectList(_context.ResponsiblePersons, "PersonnelNumber", "FirstName");
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name");
+            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id");
+            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName");
+            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name");
             return View();
         }
 
@@ -60,30 +54,30 @@ namespace InventoryAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tmc);
-                await _context.SaveChangesAsync();
+                _tmcs.AddTmc(tmc);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ActId"] = new SelectList(_context.Acts, "Id", "Id", tmc.ActId);
-            ViewData["PesponsiblePersonNumber"] = new SelectList(_context.ResponsiblePersons, "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", tmc.RoomId);
+            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
+            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
+            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
             return View(tmc);
         }
 
         // GET: TmcController/Edit/5
         [HttpGet("Tmc/Edit/{id}")]
         [ValidateTmcExists]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var tmc = await _context.Tmc.FindAsync(id);
+            var tmc = await _tmcs.GetTmcById(id);
+           
             if (tmc == null)
             {
                 return NotFound();
             }
-            ViewData["ActId"] = new SelectList(_context.Acts, "Id", "Id", tmc.ActId);
-            ViewData["PesponsiblePersonNumber"] = new SelectList(_context.ResponsiblePersons, "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", tmc.RoomId);
+            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
+            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
+            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
             return View(tmc);
         }
 
@@ -104,12 +98,11 @@ namespace InventoryAccounting.Controllers
             {
                 try
                 {
-                    _context.Update(tmc);
-                    await _context.SaveChangesAsync();
+                    await _tmcs.UpdateTmc(tmc);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TmcExists(tmc.InventoryNumber))
+                    if (! await _tmcs.TmcExists(tmc.InventoryNumber))
                     {
                         return NotFound();
                     }
@@ -120,24 +113,18 @@ namespace InventoryAccounting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActId"] = new SelectList(_context.Acts, "Id", "Id", tmc.ActId);
-            ViewData["PesponsiblePersonNumber"] = new SelectList(_context.ResponsiblePersons, "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", tmc.RoomId);
+            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
+            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
+            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
             return View(tmc);
         }
 
         // GET: TmcController/Delete/5
         [HttpGet("Tmc/Delete/{id}")]
         [ValidateTmcExists]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var tmc = await _context.Tmc
-                .Include(t => t.Act)
-                .Include(t => t.PesponsiblePersonNumberNavigation)
-                .Include(t => t.Room)
-                .FirstOrDefaultAsync(m => m.InventoryNumber == id);
-
-            return View(tmc);
+            return View(await _tmcs.GetTmcById(id));
         }
 
         // POST: TmcController/Delete/5
@@ -145,15 +132,8 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tmc = await _context.Tmc.FindAsync(id);
-            _context.Tmc.Remove(tmc);
-            await _context.SaveChangesAsync();
+            _tmcs.DeleteTmcById(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TmcExists(int id)
-        {
-            return _context.Tmc.Any(e => e.InventoryNumber == id);
         }
     }
 }

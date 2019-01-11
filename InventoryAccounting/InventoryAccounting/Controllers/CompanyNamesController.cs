@@ -22,7 +22,7 @@ namespace InventoryAccounting.Controllers
         // GET: CompanyNames
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CompanyName.ToListAsync());
+            return View(await _context.Companies.ToListAsync());
         }
 
         // GET: CompanyNames/Details/5
@@ -33,7 +33,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var companyName = await _context.CompanyName
+            var companyName = await _context.Companies
                 .FirstOrDefaultAsync(m => m.Unp == id);
             if (companyName == null)
             {
@@ -54,7 +54,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] CompanyName companyName)
+        public async Task<IActionResult> Create([Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies companyName)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var companyName = await _context.CompanyName.FindAsync(id);
+            var companyName = await _context.Companies.FindAsync(id);
             if (companyName == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] CompanyName companyName)
+        public async Task<IActionResult> Edit(int id, [Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies companyName)
         {
             if (id != companyName.Unp)
             {
@@ -124,7 +124,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var companyName = await _context.CompanyName
+            var companyName = await _context.Companies
                 .FirstOrDefaultAsync(m => m.Unp == id);
             if (companyName == null)
             {
@@ -139,15 +139,15 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var companyName = await _context.CompanyName.FindAsync(id);
-            _context.CompanyName.Remove(companyName);
+            var companyName = await _context.Companies.FindAsync(id);
+            _context.Companies.Remove(companyName);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CompanyNameExists(int id)
         {
-            return _context.CompanyName.Any(e => e.Unp == id);
+            return _context.Companies.Any(e => e.Unp == id);
         }
     }
 }

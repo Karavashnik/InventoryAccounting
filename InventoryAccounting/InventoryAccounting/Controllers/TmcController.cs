@@ -13,18 +13,18 @@ namespace InventoryAccounting.Controllers
 {
     public class TmcController : Controller
     {
-        private ITmcDataAccessLayer _tmcs;
+        private ITmcRepository _tmcs;
 
         //private readonly InventoryAccountingContext _context;
         public TmcController(InventoryAccountingContext context)
         {
-            _tmcs = new DataAccessLayer(context);
+            _tmcs = new TmcRepository(context);
         }
 
         // GET: TmcController
         public async Task<IActionResult> Index()
         {
-            return View( await _tmcs.GetAllTmc());
+            return View( await _tmcs.GetAllAsync());
         }
 
         // GET: TmcController/Details/5
@@ -32,15 +32,15 @@ namespace InventoryAccounting.Controllers
         [ValidateTmcExists]
         public async Task<IActionResult> Details(int id)
         {
-            return View(await _tmcs.GetTmcById(id));
+            return View(); //await _tmcs.GetSingle(id));
         }
 
         // GET: TmcController/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id");
-            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName");
-            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name");
+            //ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id");
+            //ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName");
+           // ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name");
             return View();
         }
 
@@ -54,13 +54,13 @@ namespace InventoryAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                _tmcs.AddTmc(tmc);
+                //_tmcs.AddTmc(tmc);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
-            ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
-            ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
+            //ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
+            //ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
+            //ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
             return View(tmc);
         }
 
@@ -69,7 +69,7 @@ namespace InventoryAccounting.Controllers
         [ValidateTmcExists]
         public async Task<IActionResult> Edit(int id)
         {
-            var tmc = await _tmcs.GetTmcById(id);
+            /*var tmc = await _tmcs.GetTmcById(id);
            
             if (tmc == null)
             {
@@ -78,7 +78,8 @@ namespace InventoryAccounting.Controllers
             ViewData["ActId"] = new SelectList(await _tmcs.GetAllActs(), "Id", "Id", tmc.ActId);
             ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
             ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
-            return View(tmc);
+            return View(tmc);*/
+            return View();
         }
 
         // POST: TmcController/Edit/5
@@ -87,13 +88,13 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[ValidateModel]
-        public async Task<IActionResult> Edit(int id, [Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonNumber,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
-        {
+        public async Task<IActionResult> Edit(Guid id, [Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonNumber,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
+        {/*
             if (id != tmc.InventoryNumber)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 try
@@ -117,6 +118,8 @@ namespace InventoryAccounting.Controllers
             ViewData["PesponsiblePersonNumber"] = new SelectList(await _tmcs.GetAllPersons(), "PersonnelNumber", "FirstName", tmc.PesponsiblePersonNumber);
             ViewData["RoomId"] = new SelectList(await _tmcs.GetAllRooms(), "Id", "Name", tmc.RoomId);
             return View(tmc);
+            */
+            return View();
         }
 
         // GET: TmcController/Delete/5
@@ -124,7 +127,7 @@ namespace InventoryAccounting.Controllers
         [ValidateTmcExists]
         public async Task<IActionResult> Delete(int id)
         {
-            return View(await _tmcs.GetTmcById(id));
+            return View(); //await _tmcs.GetTmcById(id));
         }
 
         // POST: TmcController/Delete/5
@@ -132,7 +135,7 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _tmcs.DeleteTmcById(id);
+            //_tmcs.DeleteTmcById(id);
             return RedirectToAction(nameof(Index));
         }
     }

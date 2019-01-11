@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +20,7 @@ namespace InventoryAccounting.Controllers
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            var inventoryAccountingContext = _context.Contracts.Include(c => c.CompanyUnpNavigation);
+            var inventoryAccountingContext = _context.Contracts.Include(c => c.CompanyId);
             return View(await inventoryAccountingContext.ToListAsync());
         }
 
@@ -35,7 +33,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var contracts = await _context.Contracts
-                .Include(c => c.CompanyUnpNavigation)
+                .Include(c => c.CompanyId)
                 .FirstOrDefaultAsync(m => m.ContractNumber == id);
             if (contracts == null)
             {
@@ -48,7 +46,7 @@ namespace InventoryAccounting.Controllers
         // GET: Contracts/Create
         public IActionResult Create()
         {
-            ViewData["CompanyUnp"] = new SelectList(_context.CompanyName, "Unp", "DirectorsName");
+            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName");
             return View();
         }
 
@@ -65,7 +63,7 @@ namespace InventoryAccounting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyUnp"] = new SelectList(_context.CompanyName, "Unp", "DirectorsName", contracts.CompanyUnp);
+            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
             return View(contracts);
         }
 
@@ -82,7 +80,7 @@ namespace InventoryAccounting.Controllers
             {
                 return NotFound();
             }
-            ViewData["CompanyUnp"] = new SelectList(_context.CompanyName, "Unp", "DirectorsName", contracts.CompanyUnp);
+            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
             return View(contracts);
         }
 
@@ -118,7 +116,7 @@ namespace InventoryAccounting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyUnp"] = new SelectList(_context.CompanyName, "Unp", "DirectorsName", contracts.CompanyUnp);
+            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
             return View(contracts);
         }
 
@@ -131,7 +129,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var contracts = await _context.Contracts
-                .Include(c => c.CompanyUnpNavigation)
+                .Include(c => c.CompanyId)
                 .FirstOrDefaultAsync(m => m.ContractNumber == id);
             if (contracts == null)
             {

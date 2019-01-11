@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryAccounting.Models.DB
 {
-    public class ResponsiblePersonsMetaData
+    public class PersonsMetaData
     {
         [Display(Name = "Табельный номер")]
         public int PersonnelNumber { get; set; }

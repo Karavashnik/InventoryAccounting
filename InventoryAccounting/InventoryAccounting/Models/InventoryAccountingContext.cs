@@ -1,52 +1,49 @@
 ﻿using System;
 using InventoryAccounting.Models.DB;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.IdentityModel.Protocols;
 
 namespace InventoryAccounting.Models
 {
-    public partial class InventoryAccountingContext : IdentityDbContext<User>
+    public partial class InventoryAccountingContext : DbContext
     {
+        public InventoryAccountingContext()
+        {
+        }
+
         public InventoryAccountingContext(DbContextOptions<InventoryAccountingContext> options)
             : base(options)
-        {   
-            Database.EnsureCreated();
+        {
         }
 
         public virtual DbSet<Acts> Acts { get; set; }
-        public virtual DbSet<CompanyName> CompanyName { get; set; }
+        public virtual DbSet<Companies> Companies { get; set; }
         public virtual DbSet<Contracts> Contracts { get; set; }
-        public virtual DbSet<ResponsiblePersons> ResponsiblePersons { get; set; }
+        public virtual DbSet<Persons> Persons { get; set; }
         public virtual DbSet<Rooms> Rooms { get; set; }
         public virtual DbSet<Tmc> Tmc { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Скорее всего это отсутствует
-            //modelBuilder.Ignore<identityuserclaim<string>>(); //Отключить то что не нужно
-            //modelBuilder.Ignore<identityusertoken<string>>();//Отключить то что не нужно
             modelBuilder.Entity<Acts>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CompilationDate).HasColumnType("date");
 
-                entity.HasOne(d => d.ContractNumberNavigation)
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Contract)
                     .WithMany(p => p.Acts)
-                    .HasForeignKey(d => d.ContractNumber)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Acts_Contracts");
+                    .HasForeignKey(d => d.ContractId)
+                    .HasConstraintName("FK_Acts_Contracts1");
             });
 
-            modelBuilder.Entity<CompanyName>(entity =>
+            modelBuilder.Entity<Companies>(entity =>
             {
-                entity.HasKey(e => e.Unp);
-
-                entity.Property(e => e.Unp)
-                    .HasColumnName("UNP")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Address)
                     .HasMaxLength(80)
@@ -65,30 +62,33 @@ namespace InventoryAccounting.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Unp).HasColumnName("UNP");
             });
 
             modelBuilder.Entity<Contracts>(entity =>
             {
-                entity.HasKey(e => e.ContractNumber);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.ContractNumber).ValueGeneratedNever();
+                entity.Property(e => e.CompilationDate).HasColumnType("date");
 
-                entity.Property(e => e.CompanyUnp).HasColumnName("CompanyUNP");
+                entity.Property(e => e.ExpirationDate).HasColumnType("date");
 
-                entity.Property(e => e.Date).HasColumnType("date");
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.HasOne(d => d.CompanyUnpNavigation)
+                entity.HasOne(d => d.Company)
                     .WithMany(p => p.Contracts)
-                    .HasForeignKey(d => d.CompanyUnp)
+                    .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Contracts_CompanyName");
+                    .HasConstraintName("FK_Contracts_Companies");
             });
 
-            modelBuilder.Entity<ResponsiblePersons>(entity =>
+            modelBuilder.Entity<Persons>(entity =>
             {
-                entity.HasKey(e => e.PersonnelNumber);
-
-                entity.Property(e => e.PersonnelNumber).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
@@ -147,11 +147,11 @@ namespace InventoryAccounting.Models
 
             modelBuilder.Entity<Tmc>(entity =>
             {
-                entity.HasKey(e => e.InventoryNumber);
-
                 entity.ToTable("TMC");
 
-                entity.Property(e => e.InventoryNumber).ValueGeneratedNever();
+                entity.HasIndex(e => e.RoomId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
@@ -176,13 +176,13 @@ namespace InventoryAccounting.Models
                 entity.HasOne(d => d.Act)
                     .WithMany(p => p.Tmc)
                     .HasForeignKey(d => d.ActId)
-                    .HasConstraintName("FK_TMC_Acts");
+                    .HasConstraintName("FK_TMC_Acts1");
 
-                entity.HasOne(d => d.PesponsiblePersonNumberNavigation)
+                entity.HasOne(d => d.ResponsiblePerson)
                     .WithMany(p => p.Tmc)
-                    .HasForeignKey(d => d.PesponsiblePersonNumber)
+                    .HasForeignKey(d => d.ResponsiblePersonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_InventoryName_ResponsiblePersons");
+                    .HasConstraintName("FK_TMC_Persons");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Tmc)

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using System.ComponentModel.DataAnnotations;
 namespace InventoryAccounting.Models.DB
 {
-    public class CompanyNameMetaData
+    public class CompaniesMetaData
     {
         [Display(Name = "УНП")]
         public int Unp { get; set; }

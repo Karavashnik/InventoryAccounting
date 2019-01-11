@@ -22,7 +22,7 @@ namespace InventoryAccounting.Controllers
         // GET: ResponsiblePersons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ResponsiblePersons.ToListAsync());
+            return View(await _context.Persons.ToListAsync());
         }
 
         // GET: ResponsiblePersons/Details/5
@@ -33,7 +33,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var responsiblePersons = await _context.ResponsiblePersons
+            var responsiblePersons = await _context.Persons
                 .FirstOrDefaultAsync(m => m.PersonnelNumber == id);
             if (responsiblePersons == null)
             {
@@ -54,7 +54,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] ResponsiblePersons responsiblePersons)
+        public async Task<IActionResult> Create([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons responsiblePersons)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var responsiblePersons = await _context.ResponsiblePersons.FindAsync(id);
+            var responsiblePersons = await _context.Persons.FindAsync(id);
             if (responsiblePersons == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] ResponsiblePersons responsiblePersons)
+        public async Task<IActionResult> Edit(int id, [Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons responsiblePersons)
         {
             if (id != responsiblePersons.PersonnelNumber)
             {
@@ -124,7 +124,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var responsiblePersons = await _context.ResponsiblePersons
+            var responsiblePersons = await _context.Persons
                 .FirstOrDefaultAsync(m => m.PersonnelNumber == id);
             if (responsiblePersons == null)
             {
@@ -139,15 +139,15 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var responsiblePersons = await _context.ResponsiblePersons.FindAsync(id);
-            _context.ResponsiblePersons.Remove(responsiblePersons);
+            var responsiblePersons = await _context.Persons.FindAsync(id);
+            _context.Persons.Remove(responsiblePersons);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ResponsiblePersonsExists(int id)
         {
-            return _context.ResponsiblePersons.Any(e => e.PersonnelNumber == id);
+            return _context.Persons.Any(e => e.PersonnelNumber == id);
         }
     }
 }

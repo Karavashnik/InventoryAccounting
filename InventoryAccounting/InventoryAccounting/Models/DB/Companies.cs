@@ -4,14 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-    [ModelMetadataType(typeof(CompanyNameMetaData))]
-    public partial class CompanyName
+
+    [ModelMetadataType(typeof(CompaniesMetaData))]
+    public partial class Companies
     {
-        public CompanyName()
+        public Companies()
         {
             Contracts = new HashSet<Contracts>();
         }
 
+        public Guid Id { get; set; }
         public int Unp { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

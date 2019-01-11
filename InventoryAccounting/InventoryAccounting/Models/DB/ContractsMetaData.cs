@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryAccounting.Models.DB
 {
@@ -16,6 +13,6 @@ namespace InventoryAccounting.Models.DB
         public DateTime Date { get; set; }
 
         [Display(Name = "Компания")]
-        public CompanyName CompanyUnpNavigation { get; set; }
+        public Companies Company { get; set; }
     }
 }

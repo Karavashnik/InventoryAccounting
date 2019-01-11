@@ -2,7 +2,7 @@
 
 namespace InventoryAccounting.Models
 {
-    public class CompaniesRepository : GenericDataRepository<CompanyName>, ICompaniesRepository
+    public class CompaniesRepository : GenericDataRepository<Companies>, ICompaniesRepository
     {
         public CompaniesRepository(InventoryAccountingContext context) : base(context)
         {

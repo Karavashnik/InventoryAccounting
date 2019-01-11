@@ -17,7 +17,5 @@ namespace InventoryAccounting.Models.DB
         public int Number { get; set; }
         [Display(Name = "Номер телефона")]
         public string Phone { get; set; }
-
-        public ICollection<Tmc> Tmc { get; set; }
     }
 }

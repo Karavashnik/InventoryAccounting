@@ -2,7 +2,7 @@
 
 namespace InventoryAccounting.Models
 {
-    public interface ICompaniesRepository : IGenericDataRepository<CompanyName>
+    public interface ICompaniesRepository : IGenericDataRepository<Companies>
     {
     }
 }

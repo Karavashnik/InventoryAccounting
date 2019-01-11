@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using InventoryAccounting.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-    [ModelMetadataType(typeof(ResponsiblePersonsMetaData))]
-    public partial class ResponsiblePersons
+
+    [ModelMetadataType(typeof(PersonsMetaData))]
+    public partial class Persons
     {
-        public ResponsiblePersons()
+        public Persons()
         {
             Tmc = new HashSet<Tmc>();
         }
 
+        public Guid Id { get; set; }
         public int PersonnelNumber { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }

@@ -22,12 +22,12 @@ namespace InventoryAccounting.Controllers
         // GET: Acts
         public async Task<IActionResult> Index()
         {
-            var inventoryAccountingContext = _context.Acts.Include(a => a.ContractNumberNavigation);
+            var inventoryAccountingContext = _context.Acts.Include(a => a.ContractId);
             return View(await inventoryAccountingContext.ToListAsync());
         }
 
         // GET: Acts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -35,7 +35,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var acts = await _context.Acts
-                .Include(a => a.ContractNumberNavigation)
+                .Include(a => a.ContractId)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (acts == null)
             {
@@ -65,7 +65,7 @@ namespace InventoryAccounting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
+            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
@@ -82,7 +82,7 @@ namespace InventoryAccounting.Controllers
             {
                 return NotFound();
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
+            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
@@ -91,7 +91,7 @@ namespace InventoryAccounting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CompilationDate,ContractNumber")] Acts acts)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CompilationDate,ContractNumber")] Acts acts)
         {
             if (id != acts.Id)
             {
@@ -118,12 +118,12 @@ namespace InventoryAccounting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
+            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
         // GET: Acts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -131,7 +131,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var acts = await _context.Acts
-                .Include(a => a.ContractNumberNavigation)
+                .Include(a => a.ContractId)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (acts == null)
             {
@@ -173,7 +173,7 @@ namespace InventoryAccounting.Controllers
             //return View(acts);
         }
 
-        private bool ActsExists(int id)
+        private bool ActsExists(Guid id)
         {
             return _context.Acts.Any(e => e.Id == id);
         }

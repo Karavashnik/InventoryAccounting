@@ -2,7 +2,7 @@
 
 namespace InventoryAccounting.Models
 {
-    public class PersonsRepository : GenericDataRepository<ResponsiblePersons>, IPersonsRepository
+    public class PersonsRepository : GenericDataRepository<Persons>, IPersonsRepository
     {
         public PersonsRepository(InventoryAccountingContext context) : base(context)
         {

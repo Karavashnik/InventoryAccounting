@@ -12,11 +12,13 @@ namespace InventoryAccounting.Models.DB
             Tmc = new HashSet<Tmc>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public Guid? ContractId { get; set; }
+        public int ActNumber { get; set; }
+        public string Type { get; set; }
         public DateTime CompilationDate { get; set; }
-        public int ContractNumber { get; set; }
 
-        public Contracts ContractNumberNavigation { get; set; }
+        public Contracts Contract { get; set; }
         public ICollection<Tmc> Tmc { get; set; }
     }
 }

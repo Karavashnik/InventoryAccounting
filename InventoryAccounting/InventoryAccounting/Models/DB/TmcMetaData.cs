@@ -37,7 +37,7 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Акт")]
         public Acts Act { get; set; }
         [Display(Name = "Ответственное лицо")]
-        public ResponsiblePersons PesponsiblePersonNumberNavigation { get; set; }
+        public Persons ResponsiblePerson { get; set; }
         [Display(Name = "Помещение")]
         public Rooms Room { get; set; }
     }

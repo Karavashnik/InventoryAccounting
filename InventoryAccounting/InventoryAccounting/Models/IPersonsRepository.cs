@@ -2,7 +2,7 @@
 
 namespace InventoryAccounting.Models
 {
-    public interface IPersonsRepository : IGenericDataRepository<ResponsiblePersons>
+    public interface IPersonsRepository : IGenericDataRepository<Persons>
     {
     }
 }

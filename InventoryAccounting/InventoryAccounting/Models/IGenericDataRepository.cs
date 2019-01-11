@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InventoryAccounting.Models
 {
-    public interface IGenericDataAccessLayer<T> where T : class
+    public interface IGenericDataRepository<T> where T : class
     {
         Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] navigationProperties);
         IList<T> GetList(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);

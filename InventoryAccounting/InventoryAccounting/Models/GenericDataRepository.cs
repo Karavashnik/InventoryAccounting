@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAccounting.Models
 {
-    public class GenericDataAccessLayer<T> : IGenericDataAccessLayer<T> where T : class
+    public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class
     {
         private readonly InventoryAccountingContext context;
 
-        public GenericDataAccessLayer(InventoryAccountingContext context)
+        public GenericDataRepository(InventoryAccountingContext context)
         {
             this.context = context;
         }

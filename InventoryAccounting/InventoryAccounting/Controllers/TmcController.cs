@@ -30,9 +30,10 @@ namespace InventoryAccounting.Controllers
         // GET: TmcController/Details/5
         [HttpGet("Tmc/Details/{id}")]
         [ValidateTmcExists]
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(Guid id)
         {
-            return View(); //await _tmcs.GetSingle(id));
+            var par = new Func<Tmc, bool>( tmc => tmc.Id == id); 
+            return View(_tmcs.GetSingle(par));
         }
 
         // GET: TmcController/Create

@@ -5,6 +5,8 @@ namespace InventoryAccounting.Models.DB
 {
     public class PersonsMetaData
     {
+        [Display(Name = "Id")]
+        public Guid Id { get; set; }
         [Display(Name = "Табельный номер")]
         public int PersonnelNumber { get; set; }
         [Display(Name = "Фамилия")]

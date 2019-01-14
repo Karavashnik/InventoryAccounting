@@ -10,6 +10,7 @@ namespace InventoryAccounting.Models.DB
         public Acts()
         {
             Tmc = new HashSet<Tmc>();
+            Id = new Guid();
         }
 
         public Guid Id { get; set; }

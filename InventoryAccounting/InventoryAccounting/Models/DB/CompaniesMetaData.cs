@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace InventoryAccounting.Models.DB
 {
     public class CompaniesMetaData
     {
+        [Display(Name = "Id")]
+        public Guid Id { get; set; }
         [Display(Name = "УНП")]
         public int Unp { get; set; }
         [Display(Name = "Название")]

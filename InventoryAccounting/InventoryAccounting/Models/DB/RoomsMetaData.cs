@@ -8,6 +8,7 @@ namespace InventoryAccounting.Models.DB
 {
     public class RoomsMetaData
     {
+        [Display(Name = "Id")]
         public Guid Id { get; set; }
         [Display(Name = "Название")]
         public string Name { get; set; }

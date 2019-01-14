@@ -1,10 +1,11 @@
 ﻿using System;
 using InventoryAccounting.Models.DB;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAccounting.Models
 {
-    public partial class InventoryAccountingContext : DbContext
+    public partial class InventoryAccountingContext : IdentityDbContext<User>
     {
         public InventoryAccountingContext()
         {
@@ -13,6 +14,7 @@ namespace InventoryAccounting.Models
         public InventoryAccountingContext(DbContextOptions<InventoryAccountingContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<Acts> Acts { get; set; }
@@ -24,6 +26,7 @@ namespace InventoryAccounting.Models
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Acts>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();

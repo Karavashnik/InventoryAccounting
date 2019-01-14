@@ -7,6 +7,10 @@ namespace InventoryAccounting.Models.DB
     [ModelMetadataType(typeof(TmcMetaData))]
     public partial class Tmc
     {
+        public Tmc()
+        {
+            Id = new Guid();
+        }
         public Guid Id { get; set; }
         public int InventoryNumber { get; set; }
         public Guid ResponsiblePersonId { get; set; }

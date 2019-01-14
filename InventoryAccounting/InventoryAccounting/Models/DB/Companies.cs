@@ -11,6 +11,7 @@ namespace InventoryAccounting.Models.DB
         public Companies()
         {
             Contracts = new HashSet<Contracts>();
+            Id = new Guid();
         }
 
         public Guid Id { get; set; }

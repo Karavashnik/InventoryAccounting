@@ -42,7 +42,7 @@
                     @Html.DisplayNameFor(model => model.Act)
                 </th>
                 <th scope="col">
-                    @Html.DisplayNameFor(model => model.PesponsiblePersonNumberNavigation)
+                    @Html.DisplayNameFor(model => model.ResponsiblePerson)
                 </th>
                 <th scope="col">
                     @Html.DisplayNameFor(model => model.Room)
@@ -82,7 +82,7 @@
                         @Html.DisplayFor(modelItem => item.Act.Id)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PesponsiblePersonNumberNavigation.FirstName) @Html.DisplayFor(modelItem => item.PesponsiblePersonNumberNavigation.LastName)
+                        @Html.DisplayFor(modelItem => item.ResponsiblePerson.FirstName) @Html.DisplayFor(modelItem => item.ResponsiblePerson.LastName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Room.Name)

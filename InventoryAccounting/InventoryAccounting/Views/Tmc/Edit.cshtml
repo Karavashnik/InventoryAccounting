@@ -59,11 +59,11 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label asp-for="PesponsiblePersonNumber" class="col-form-label"></label>
+                    <label asp-for="ResponsiblePerson" class="col-form-label"></label>
                     <div class="input-group">
-                        <select asp-for="PesponsiblePersonNumber" class="form-control" asp-items="ViewBag.PesponsiblePersonNumber"></select>
+                        <select asp-for="ResponsiblePerson" class="form-control" asp-items="ViewBag.PesponsiblePersonNumber"></select>
                         <div class="input-group-append">
-                            <a asp-controller="ResponsiblePersons" asp-action="Create" class="btn btn-outline-secondary">Добавить</a>
+                            <a asp-controller="Persons" asp-action="Create" class="btn btn-outline-secondary">Добавить</a>
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,8 @@ namespace InventoryAccounting.Models.DB
 {
     public class TmcMetaData
     {
+        [Display(Name = "Id")]
+        public Guid Id { get; set; }
         [Display(Name = "Инвентарный номер")]
         public int InventoryNumber { get; set; }
         [Display(Name = "Название")]
@@ -20,7 +22,7 @@ namespace InventoryAccounting.Models.DB
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime PurchaseDate { get; set; }
         [Display(Name = "Ответственное лицо")]
-        public int PesponsiblePersonNumber { get; set; }
+        public Guid ResponsiblePersonId { get; set; }
         [Display(Name = "Заводской номер")]
         public int FactoryNumber { get; set; }
         [Display(Name = "Дата списания")]

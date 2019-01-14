@@ -11,6 +11,7 @@ namespace InventoryAccounting.Models.DB
         public Persons()
         {
             Tmc = new HashSet<Tmc>();
+            Id = new Guid();
         }
 
         public Guid Id { get; set; }

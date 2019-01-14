@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.CompilationDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ContractNumberNavigation)
+                @Html.DisplayNameFor(model => model.Contract)
             </th>
             <th></th>
         </tr>
@@ -29,7 +29,7 @@
                 @Html.DisplayFor(modelItem => item.CompilationDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ContractNumberNavigation.ContractNumber)
+                @Html.DisplayFor(modelItem => item.Contract.ContractNumber)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

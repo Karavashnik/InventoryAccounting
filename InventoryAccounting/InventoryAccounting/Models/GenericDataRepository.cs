@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -64,8 +65,8 @@ namespace InventoryAccounting.Models
                 dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
             item = dbQuery
-                .AsNoTracking() //Don't track any changes for the selected item
-                .FirstOrDefault(where); //Apply where clause
+                .AsNoTracking()
+                .SingleOrDefault(where); //Apply where clause
             
             return item;
         }

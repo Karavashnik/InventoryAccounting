@@ -10,11 +10,11 @@ using InventoryAccounting.Models.DB;
 
 namespace InventoryAccounting.Controllers
 {
-    public class CompanyNamesController : Controller
+    public class CompaniesController : Controller
     {
         private readonly InventoryAccountingContext _context;
 
-        public CompanyNamesController(InventoryAccountingContext context)
+        public CompaniesController(InventoryAccountingContext context)
         {
             _context = context;
         }

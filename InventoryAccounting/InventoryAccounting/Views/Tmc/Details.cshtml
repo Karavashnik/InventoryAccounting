@@ -43,12 +43,12 @@
             <span class="col-md-10">@Html.DisplayFor(model => model.WarrantyDate)</span>
         </div>
         <div class="row my-1">
-            <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.PesponsiblePersonNumberNavigation)</span>
+            <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.ResponsiblePerson)</span>
             <span class="col-md-10">
-                @Html.DisplayFor(model => model.PesponsiblePersonNumberNavigation.FirstName)
-                @Html.DisplayFor(model => model.PesponsiblePersonNumberNavigation.LastName)
-                @Html.DisplayFor(model => model.PesponsiblePersonNumberNavigation.MiddleName)
-                <a asp-controller="ResponsiblePersons" asp-action="Details" asp-route-id="@Model.PesponsiblePersonNumber" class="fas fa-info-circle text-dark"></a>
+                @Html.DisplayFor(model => model.ResponsiblePerson.FirstName)
+                @Html.DisplayFor(model => model.ResponsiblePerson.LastName)
+                @Html.DisplayFor(model => model.ResponsiblePerson.MiddleName)
+                <a asp-controller="Persons" asp-action="Details" asp-route-id="@Model.ResponsiblePerson.PersonnelNumber" class="fas fa-info-circle text-dark"></a>
             </span>
         </div>
         <div class="row my-1">

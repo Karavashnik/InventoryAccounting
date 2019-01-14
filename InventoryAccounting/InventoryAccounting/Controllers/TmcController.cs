@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventoryAccounting.Controllers
 {
+    [Authorize]
     public class TmcController : Controller
     {
         private ITmcRepository _tmcs;

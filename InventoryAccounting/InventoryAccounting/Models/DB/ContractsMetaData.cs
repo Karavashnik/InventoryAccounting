@@ -7,15 +7,22 @@ namespace InventoryAccounting.Models.DB
     {
         [Display(Name = "Id")]
         public Guid Id { get; set; }
+        [Required]
         [Display(Name = "Компания")]
         public Guid CompanyId { get; set; }
+        [Required]
         [Display(Name = "Номер договора")]
         public int ContractNumber { get; set; }
+        [Required]
+        [MaxLength(50)]
         [Display(Name = "Тип договора")]
         public string Type { get; set; }
-        [Display(Name = "Скрок договора")]
+        [Display(Name = "Срок договора")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? ExpirationDate { get; set; }
+        [Required]
         [Display(Name = "Дата составления")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime CompilationDate { get; set; }
 
         [Display(Name = "Компания")]

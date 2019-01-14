@@ -10,7 +10,7 @@ namespace InventoryAccounting.Models
 {
     public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class
     {
-        private readonly InventoryAccountingContext context;
+        protected readonly InventoryAccountingContext context;
 
         public GenericDataRepository(InventoryAccountingContext context)
         {
@@ -24,11 +24,10 @@ namespace InventoryAccounting.Models
 
             //Apply eager loading
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                dbQuery = dbQuery.Include<T, object>(navigationProperty);
-
+                dbQuery = dbQuery.Include(navigationProperty.ToString());
             list = await dbQuery
                 .AsNoTracking()
-                .ToListAsync<T>();
+                .ToListAsync();
             
             return list;
         }
@@ -53,7 +52,7 @@ namespace InventoryAccounting.Models
             return list;
         }
 
-        public virtual T GetSingle(Func<T, bool> where,
+        public virtual async Task<T> GetSingleAsync(Expression<Func<T, bool>> where,
              params Expression<Func<T, object>>[] navigationProperties)
         {
             T item = null;
@@ -64,9 +63,9 @@ namespace InventoryAccounting.Models
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                 dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
-            item = dbQuery
+            item = await dbQuery
                 .AsNoTracking()
-                .SingleOrDefault(where); //Apply where clause
+                .SingleOrDefaultAsync(where); //Apply where clause
             
             return item;
         }
@@ -98,6 +97,11 @@ namespace InventoryAccounting.Models
             }
             await context.SaveChangesAsync();
             
+        }
+
+        public virtual async Task<bool> ItemExists(Expression<Func<T, bool>> where)
+        {
+            return await context.Set<T>().AnyAsync(where);
         }
     }
 }

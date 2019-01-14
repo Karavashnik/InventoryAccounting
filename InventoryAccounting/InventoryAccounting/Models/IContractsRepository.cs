@@ -1,4 +1,5 @@
-﻿using InventoryAccounting.Models.DB;
+﻿using System.Threading.Tasks;
+using InventoryAccounting.Models.DB;
 
 namespace InventoryAccounting.Models
 {

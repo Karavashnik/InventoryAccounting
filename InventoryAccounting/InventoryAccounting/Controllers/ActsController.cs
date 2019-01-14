@@ -14,18 +14,18 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class ActsController : Controller
     {
-        private readonly InventoryAccountingContext _context;
-
+        //private readonly InventoryAccountingContext _context;
+        private IActsRepository _acts;
         public ActsController(InventoryAccountingContext context)
         {
-            _context = context;
+            _acts = new ActsRepository(context);
+            //_context = context;
         }
 
         // GET: Acts
         public async Task<IActionResult> Index()
         {
-            var inventoryAccountingContext = _context.Acts.Include(a => a.ContractId);
-            return View(await inventoryAccountingContext.ToListAsync());
+            return View(await _acts.GetAllAsync(acts => acts.ContractId));
         }
 
         // GET: Acts/Details/5
@@ -36,9 +36,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var acts = await _context.Acts
-                .Include(a => a.ContractId)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var acts = await _acts.GetSingleAsync(act => act.ContractId == id, act => act.ContractId);
             if (acts == null)
             {
                 return NotFound();
@@ -48,9 +46,9 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber");
+            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber");
             return View();
         }
 
@@ -63,28 +61,27 @@ namespace InventoryAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(acts);
-                await _context.SaveChangesAsync();
+                _acts.AddAsync(acts);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
+            ViewData["ContractNumber"] = new SelectList( await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
         // GET: Acts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var acts = await _context.Acts.FindAsync(id);
+            var acts = await _acts.GetSingleAsync(act => act.Id == id);
             if (acts == null)
             {
                 return NotFound();
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
+            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
@@ -104,8 +101,7 @@ namespace InventoryAccounting.Controllers
             {
                 try
                 {
-                    _context.Update(acts);
-                    await _context.SaveChangesAsync();
+                    _acts.UpdateAsync(acts);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -120,7 +116,7 @@ namespace InventoryAccounting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractId);
+            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
 
@@ -132,9 +128,7 @@ namespace InventoryAccounting.Controllers
                 return NotFound();
             }
 
-            var acts = await _context.Acts
-                .Include(a => a.ContractId)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var acts = await _acts.GetSingleAsync(act => act.Id == id, act => act.Id);
             if (acts == null)
             {
                 return NotFound();
@@ -146,18 +140,16 @@ namespace InventoryAccounting.Controllers
         // POST: Acts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var acts = await _context.Acts.FindAsync(id);
-            _context.Acts.Remove(acts);
-            await _context.SaveChangesAsync();
+            _acts.RemoveAsync(await _acts.GetSingleAsync(act=> act.Id == id));
             return RedirectToAction(nameof(Index));
         }
 
         
-        public ActionResult CreateModal()
+        public async Task<ActionResult> CreateModal()
         {
-            ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber");
+            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber");
             return PartialView("CreateModal");
         }
 
@@ -167,8 +159,7 @@ namespace InventoryAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(acts);
-                await _context.SaveChangesAsync();
+                _acts.AddAsync(acts);
                 //return RedirectToAction(nameof(Index));
             }
             //ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
@@ -177,7 +168,7 @@ namespace InventoryAccounting.Controllers
 
         private bool ActsExists(Guid id)
         {
-            return _context.Acts.Any(e => e.Id == id);
+            return _acts.ItemExists(x => x.Id == id).Result;
         }
     }
 }

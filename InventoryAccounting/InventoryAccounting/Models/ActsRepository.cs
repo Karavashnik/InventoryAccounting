@@ -11,6 +11,11 @@ namespace InventoryAccounting.Models
         {
         }
 
+        //public async override Task<IList<Acts>> GetAllAsync()
+        //{
+        //   return await context.Acts.Include(acts => acts.ContractId).ToListAsync();
+        //}
+
         public async Task<IList<Contracts>> GetAllContractsAsync()
         {
             return await context.Contracts.ToListAsync();

@@ -7,15 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAccounting.Filters
 {
-    public class ValidateTmcExistsAttribute : TypeFilterAttribute
+    public class ValidateActsExistsAttribute : TypeFilterAttribute
     {
-        public ValidateTmcExistsAttribute() : base(typeof(ValidateTmcExistsAttribute)) {}
+        public ValidateActsExistsAttribute() : base(typeof(ValidateActsExistsAttribute)) { }
 
-        private class ValidateTmcExistsFilterImpl : IAsyncActionFilter
+        private class ValidateActsExistsFilterImpl : IAsyncActionFilter
         {
             private readonly InventoryAccountingContext _context;
 
-            public ValidateTmcExistsFilterImpl(InventoryAccountingContext context)
+            public ValidateActsExistsFilterImpl(InventoryAccountingContext context)
             {
                 _context = context;
             }
@@ -25,7 +25,7 @@ namespace InventoryAccounting.Filters
                 {
                     if (context.ActionArguments["id"] is Guid id)
                     {
-                        if (await _context.Tmc.AllAsync(t => t.Id != id))
+                        if (await _context.Acts.AllAsync(t => t.Id != id))
                         {
                             context.Result = new NotFoundObjectResult(id);
                             return;

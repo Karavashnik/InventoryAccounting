@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class ActsController : Controller
     {
-        //private readonly InventoryAccountingContext _context;
+        private readonly InventoryAccountingContext _context;
         private IActsRepository _acts;
         public ActsController(InventoryAccountingContext context)
         {
@@ -29,6 +30,8 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Details/5
+        [HttpGet("Acts/Details/{id}")]
+        [ValidateActsExists]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -37,10 +40,6 @@ namespace InventoryAccounting.Controllers
             }
 
             var acts = await _acts.GetSingleAsync(act => act.ContractId == id, act => act.ContractId);
-            if (acts == null)
-            {
-                return NotFound();
-            }
 
             return View(acts);
         }
@@ -69,6 +68,8 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Edit/5
+        [HttpGet("Acts/Edit/{id}")]
+        [ValidateActsExists]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -77,10 +78,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var acts = await _acts.GetSingleAsync(act => act.Id == id);
-            if (acts == null)
-            {
-                return NotFound();
-            }
+            
             ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
             return View(acts);
         }
@@ -121,6 +119,8 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Delete/5
+        [HttpGet("Acts/Delete/{id}")]
+        [ValidateActsExists]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -129,11 +129,7 @@ namespace InventoryAccounting.Controllers
             }
 
             var acts = await _acts.GetSingleAsync(act => act.Id == id, act => act.Id);
-            if (acts == null)
-            {
-                return NotFound();
-            }
-
+            
             return View(acts);
         }
 

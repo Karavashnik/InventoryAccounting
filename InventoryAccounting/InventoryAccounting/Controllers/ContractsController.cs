@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,17 +14,18 @@ namespace InventoryAccounting.Controllers
     public class ContractsController : Controller
     {
         private readonly InventoryAccountingContext _context;
-
+        private IContractsRepository _contracts;
         public ContractsController(InventoryAccountingContext context)
         {
             _context = context;
+            _contracts = new ContractsRepository(context);
         }
 
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            var inventoryAccountingContext = _context.Contracts.Include(c => c.CompanyId);
-            return View(await inventoryAccountingContext.ToListAsync());
+            var contracts = await _contracts.GetAllAsync(x => x.CompanyId);
+            return View(contracts ?? new List<Contracts>());
         }
 
         // GET: Contracts/Details/5

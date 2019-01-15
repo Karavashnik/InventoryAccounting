@@ -15,16 +15,17 @@ namespace InventoryAccounting.Controllers
     public class CompaniesController : Controller
     {
         private readonly InventoryAccountingContext _context;
-
+        private ICompaniesRepository _companies;
         public CompaniesController(InventoryAccountingContext context)
         {
             _context = context;
+            _companies = new CompaniesRepository(context);
         }
 
         // GET: CompanyNames
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Companies.ToListAsync());
+            return View(await _companies.GetAllAsync());
         }
 
         // GET: CompanyNames/Details/5

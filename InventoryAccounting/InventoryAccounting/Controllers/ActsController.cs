@@ -15,12 +15,10 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class ActsController : Controller
     {
-        private readonly InventoryAccountingContext _context;
         private IActsRepository _acts;
         public ActsController(InventoryAccountingContext context)
         {
             _acts = new ActsRepository(context);
-            //_context = context;
         }
 
         // GET: Acts
@@ -31,23 +29,16 @@ namespace InventoryAccounting.Controllers
 
         // GET: Acts/Details/5
         [HttpGet("Acts/Details/{id}")]
-        [ValidateActsExists]
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var acts = await _acts.GetSingleAsync(act => act.ContractId == id, act => act.ContractId);
-
-            return View(acts);
+            return View(await _acts.GetSingleAsync(act => act.ContractId == id, act => act.ContractId));
         }
 
         // GET: Acts/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber");
+            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
             return View();
         }
 
@@ -55,82 +46,52 @@ namespace InventoryAccounting.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CompilationDate,ContractNumber")] Acts acts)
+        public async Task<IActionResult> Create([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
-            if (ModelState.IsValid)
-            {
-                _acts.AddAsync(acts);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ContractNumber"] = new SelectList( await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
-            return View(acts);
+            await _acts.AddAsync(acts);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Acts/Edit/5
         [HttpGet("Acts/Edit/{id}")]
-        [ValidateActsExists]
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var acts = await _acts.GetSingleAsync(act => act.Id == id);
-            
-            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
-            return View(acts);
+            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
+            return View(await _acts.GetSingleAsync(act => act.Id == id));
         }
 
         // POST: Acts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CompilationDate,ContractNumber")] Acts acts)
+        public async Task<IActionResult> Edit([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
-            if (id != acts.Id)
+            try
             {
-                return NotFound();
+                await _acts.UpdateAsync(acts);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!await _acts.ItemExists(x=> x.Id == acts.Id))
                 {
-                    _acts.UpdateAsync(acts);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ActsExists(acts.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber", acts.ContractId);
-            return View(acts);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Acts/Delete/5
         [HttpGet("Acts/Delete/{id}")]
-        [ValidateActsExists]
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var acts = await _acts.GetSingleAsync(act => act.Id == id, act => act.Id);
-            
-            return View(acts);
+            return View(await _acts.GetSingleAsync(act => act.Id == id, act => act.Id));
         }
 
         // POST: Acts/Delete/5
@@ -138,33 +99,24 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            _acts.RemoveAsync(await _acts.GetSingleAsync(act=> act.Id == id));
+            await _acts.RemoveAsync(await _acts.GetSingleAsync(act=> act.Id == id));
             return RedirectToAction(nameof(Index));
         }
 
         
         public async Task<ActionResult> CreateModal()
         {
-            ViewData["ContractNumber"] = new SelectList(await _acts.GetAllContractsAsync(), "ContractNumber", "ContractNumber");
+            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
             return PartialView("CreateModal");
         }
 
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async void CreateModal([Bind("Id,CompilationDate,ContractNumber")] Acts acts)
+        public async Task CreateModal([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
-            if (ModelState.IsValid)
-            {
-                _acts.AddAsync(acts);
-                //return RedirectToAction(nameof(Index));
-            }
-            //ViewData["ContractNumber"] = new SelectList(_context.Contracts, "ContractNumber", "ContractNumber", acts.ContractNumber);
-            //return View(acts);
-        }
-
-        private bool ActsExists(Guid id)
-        {
-            return _acts.ItemExists(x => x.Id == id).Result;
+            await _acts.AddAsync(acts);
+            //return RedirectToAction(nameof(Index));
         }
     }
 }

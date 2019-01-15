@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,44 +13,29 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class ContractsController : Controller
     {
-        private readonly InventoryAccountingContext _context;
         private IContractsRepository _contracts;
         public ContractsController(InventoryAccountingContext context)
         {
-            _context = context;
             _contracts = new ContractsRepository(context);
         }
 
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            var contracts = await _contracts.GetAllAsync(x => x.CompanyId);
-            return View(contracts ?? new List<Contracts>());
+            return View(await _contracts.GetAllAsync(x => x.CompanyId));
         }
 
         // GET: Contracts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
+        public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contracts = await _context.Contracts
-                .Include(c => c.CompanyId)
-                .FirstOrDefaultAsync(m => m.ContractNumber == id);
-            if (contracts == null)
-            {
-                return NotFound();
-            }
-
-            return View(contracts);
+            return View(await _contracts.GetSingleAsync(x => x.Id == id, c => c.CompanyId));
         }
 
         // GET: Contracts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName");
+            ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
             return View();
         }
 
@@ -58,105 +43,59 @@ namespace InventoryAccounting.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContractNumber,CompanyUnp,Date")] Contracts contracts)
+        public async Task<IActionResult> Create([Bind("CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(contracts);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
-            return View(contracts);
+            await _contracts.AddAsync(contracts);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Contracts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
+        public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contracts = await _context.Contracts.FindAsync(id);
-            if (contracts == null)
-            {
-                return NotFound();
-            }
-            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
-            return View(contracts);
+            ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
+            return View(await _contracts.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: Contracts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContractNumber,CompanyUnp,Date")] Contracts contracts)
+        public async Task<IActionResult> Edit([Bind("CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
         {
-            if (id != contracts.ContractNumber)
+            try
             {
-                return NotFound();
+                await _contracts.UpdateAsync(contracts);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (! await _contracts.ItemExists(x=>x.Id == contracts.Id))
                 {
-                    _context.Update(contracts);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContractsExists(contracts.ContractNumber))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            ViewData["CompanyUnp"] = new SelectList(_context.Companies, "Unp", "DirectorsName", contracts.CompanyId);
-            return View(contracts);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Contracts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
+        public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contracts = await _context.Contracts
-                .Include(c => c.CompanyId)
-                .FirstOrDefaultAsync(m => m.ContractNumber == id);
-            if (contracts == null)
-            {
-                return NotFound();
-            }
-
-            return View(contracts);
+            return View(await _contracts.GetSingleAsync(x=>x.Id == id, x=>x.CompanyId));
         }
 
         // POST: Contracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var contracts = await _context.Contracts.FindAsync(id);
-            _context.Contracts.Remove(contracts);
-            await _context.SaveChangesAsync();
+            await _contracts.RemoveAsync(await _contracts.GetSingleAsync(x => x.Id == id));
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ContractsExists(int id)
-        {
-            return _context.Contracts.Any(e => e.ContractNumber == id);
         }
     }
 }

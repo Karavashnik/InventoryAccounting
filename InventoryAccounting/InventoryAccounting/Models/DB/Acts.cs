@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace InventoryAccounting.Models.DB
 {
     [ModelMetadataType(typeof(ActsMetaData))]
-    public partial class Acts
+    public partial class Acts : IEntity
     {
         public Acts()
         {
             Tmc = new HashSet<Tmc>();
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }

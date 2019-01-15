@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using InventoryAccounting.Models.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAccounting.Models
 {
@@ -10,6 +9,11 @@ namespace InventoryAccounting.Models
     {
         public ContractsRepository(InventoryAccountingContext context) : base(context)
         {
+        }
+
+        public async Task<IList<Companies>> GetCompaniesAsync()
+        {
+            return await context.Companies.ToListAsync();
         }
     }
 }

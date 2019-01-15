@@ -5,11 +5,11 @@ namespace InventoryAccounting.Models.DB
 {
 
     [ModelMetadataType(typeof(TmcMetaData))]
-    public partial class Tmc
+    public partial class Tmc : IEntity
     {
         public Tmc()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
         public Guid Id { get; set; }
         public int InventoryNumber { get; set; }

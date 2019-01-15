@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using InventoryAccounting.Models;
+using InventoryAccounting.Models.DB;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -91,7 +93,15 @@ namespace InventoryAccounting
                     Configuration["EmailSender:UserName"],
                     Configuration["EmailSender:Password"]
                 ));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<ValidateEntityExistsAttribute<Rooms>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Tmc>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Persons>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Acts>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Contracts>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Companies>>();
+            services.AddMvc( options =>
+                    options.Filters.Add(typeof(ValidateModelAttribute))
+                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -141,7 +151,7 @@ namespace InventoryAccounting
             //Assign Admin role to the main User here we have given our newly registered 
             //login id for Admin management
             User user = await UserManager.FindByEmailAsync("antondedenko@gmail.com");
-            //var User = new User();
+            var User = new User();
             await UserManager.AddToRoleAsync(user, "Admin");
         }
     }

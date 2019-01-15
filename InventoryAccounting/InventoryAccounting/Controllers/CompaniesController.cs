@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
@@ -14,39 +12,26 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class CompaniesController : Controller
     {
-        private readonly InventoryAccountingContext _context;
         private ICompaniesRepository _companies;
         public CompaniesController(InventoryAccountingContext context)
         {
-            _context = context;
             _companies = new CompaniesRepository(context);
         }
 
-        // GET: CompanyNames
+        // GET: Companies
         public async Task<IActionResult> Index()
         {
             return View(await _companies.GetAllAsync());
         }
 
-        // GET: CompanyNames/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Companies/Details/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Companies>))]
+        public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var companyName = await _context.Companies
-                .FirstOrDefaultAsync(m => m.Unp == id);
-            if (companyName == null)
-            {
-                return NotFound();
-            }
-
-            return View(companyName);
+            return View(await _companies.GetSingleAsync(x => x.Id == id));
         }
 
-        // GET: CompanyNames/Create
+        // GET: Companies/Create
         public IActionResult Create()
         {
             return View();
@@ -56,101 +41,59 @@ namespace InventoryAccounting.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies companyName)
+        public async Task<IActionResult> Create([Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies company)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(companyName);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(companyName);
+            await _companies.AddAsync(company);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: CompanyNames/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Companies/Edit/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Companies>))]
+        public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var companyName = await _context.Companies.FindAsync(id);
-            if (companyName == null)
-            {
-                return NotFound();
-            }
-            return View(companyName);
+            return View(await _companies.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: CompanyNames/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies companyName)
+        public async Task<IActionResult> Edit([Bind("Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies companies)
         {
-            if (id != companyName.Unp)
+            try
             {
-                return NotFound();
+                await _companies.UpdateAsync(companies);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (! await _companies.ItemExists(x => x.Id == companies.Id))
                 {
-                    _context.Update(companyName);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CompanyNameExists(companyName.Unp))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            return View(companyName);
+            return RedirectToAction(nameof(Index));
+            
         }
 
-        // GET: CompanyNames/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Companies/Delete/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Companies>))]
+        public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var companyName = await _context.Companies
-                .FirstOrDefaultAsync(m => m.Unp == id);
-            if (companyName == null)
-            {
-                return NotFound();
-            }
-
-            return View(companyName);
+            return View(await _companies.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: CompanyNames/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var companyName = await _context.Companies.FindAsync(id);
-            _context.Companies.Remove(companyName);
-            await _context.SaveChangesAsync();
+            await _companies.RemoveAsync(await _companies.GetSingleAsync(x => x.Id == id));
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CompanyNameExists(int id)
-        {
-            return _context.Companies.Any(e => e.Unp == id);
         }
     }
 }

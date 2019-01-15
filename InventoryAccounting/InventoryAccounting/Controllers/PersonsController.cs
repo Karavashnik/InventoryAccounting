@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
@@ -14,142 +13,87 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class PersonsController : Controller
     {
-        private readonly InventoryAccountingContext _context;
-
+        private IPersonsRepository _persons;
         public PersonsController(InventoryAccountingContext context)
         {
-            _context = context;
+            _persons = new PersonsRepository(context);
         }
 
-        // GET: ResponsiblePersons
+        // GET: Persons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Persons.ToListAsync());
+            return View(await _persons.GetAllAsync());
         }
 
-        // GET: ResponsiblePersons/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Persons/Details/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
+        public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var responsiblePersons = await _context.Persons
-                .FirstOrDefaultAsync(m => m.PersonnelNumber == id);
-            if (responsiblePersons == null)
-            {
-                return NotFound();
-            }
-
-            return View(responsiblePersons);
+            return View(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
-        // GET: ResponsiblePersons/Create
+        // GET: Persons/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ResponsiblePersons/Create
+        // POST: Persons/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons responsiblePersons)
+        public async Task<IActionResult> Create([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(responsiblePersons);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(responsiblePersons);
+            await _persons.AddAsync(person);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: ResponsiblePersons/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Persons/Edit/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
+        public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var responsiblePersons = await _context.Persons.FindAsync(id);
-            if (responsiblePersons == null)
-            {
-                return NotFound();
-            }
-            return View(responsiblePersons);
+            return View(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
-        // POST: ResponsiblePersons/Edit/5
+        // POST: Persons/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons responsiblePersons)
+        public async Task<IActionResult> Edit([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
         {
-            if (id != responsiblePersons.PersonnelNumber)
+            try
             {
-                return NotFound();
+                await _persons.UpdateAsync(person);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!await _persons.ItemExists(x=>x.Id == person.Id))
                 {
-                    _context.Update(responsiblePersons);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ResponsiblePersonsExists(responsiblePersons.PersonnelNumber))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            return View(responsiblePersons);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: ResponsiblePersons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Persons/Delete/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
+        public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var responsiblePersons = await _context.Persons
-                .FirstOrDefaultAsync(m => m.PersonnelNumber == id);
-            if (responsiblePersons == null)
-            {
-                return NotFound();
-            }
-
-            return View(responsiblePersons);
+            return View(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: ResponsiblePersons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var responsiblePersons = await _context.Persons.FindAsync(id);
-            _context.Persons.Remove(responsiblePersons);
-            await _context.SaveChangesAsync();
+            await _persons.RemoveAsync(await _persons.GetSingleAsync(x => x.Id == id));
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ResponsiblePersonsExists(int id)
-        {
-            return _context.Persons.Any(e => e.PersonnelNumber == id);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace InventoryAccounting.Models
             return item;
         }
 
-        public virtual async void AddAsync(params T[] items)
+        public virtual async Task AddAsync(params T[] items)
         {
             foreach (T item in items)
             {
@@ -79,17 +79,16 @@ namespace InventoryAccounting.Models
             await context.SaveChangesAsync();
             
         }
-        public virtual async void UpdateAsync(params T[] items)
+        public virtual async Task UpdateAsync(params T[] items)
         {
             foreach (T item in items)
             {
                 context.Entry(item).State = EntityState.Modified;
             }
             await context.SaveChangesAsync();
-            
         }
 
-        public virtual async void RemoveAsync(params T[] items)
+        public virtual async Task RemoveAsync(params T[] items)
         {
             foreach (T item in items)
             {

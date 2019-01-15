@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
@@ -14,35 +12,16 @@ namespace InventoryAccounting.Controllers
     [Authorize]
     public class RoomsController : Controller
     {
-        private readonly InventoryAccountingContext _context;
-
+        private readonly IRoomsRepository _rooms;
         public RoomsController(InventoryAccountingContext context)
         {
-            _context = context;
+            _rooms = new RoomsRepository(context);
         }
 
         // GET: Rooms
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Rooms.ToListAsync());
-        }
-
-        // GET: Rooms/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var rooms = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rooms == null)
-            {
-                return NotFound();
-            }
-
-            return View(rooms);
+            return View(await _rooms.GetAllAsync());
         }
 
         // GET: Rooms/Create
@@ -55,86 +34,55 @@ namespace InventoryAccounting.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Floor,Number,Phone")] Rooms rooms)
+        public async Task<IActionResult> Create([Bind("Name,Floor,Number,Phone")] Rooms rooms)
         {
-            if (ModelState.IsValid)
-            {
-                rooms.Id = Guid.NewGuid();
-                _context.Add(rooms);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rooms);
+            await _rooms.AddAsync(rooms);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Rooms/Edit/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var rooms = await _context.Rooms.FindAsync(id);
-            if (rooms == null)
-            {
-                return NotFound();
-            }
-            return View(rooms);
+            return View(await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Floor,Number,Phone")] Rooms rooms)
+        public async Task<IActionResult> Edit([Bind("Name,Floor,Number,Phone")] Rooms rooms)
         {
-            if (id != rooms.Id)
+            try
             {
-                return NotFound();
+                await _rooms.UpdateAsync(rooms);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!await _rooms.ItemExists(x => x.Id == rooms.Id))
                 {
-                    _context.Update(rooms);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoomsExists(rooms.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            return View(rooms);
+            return RedirectToAction(nameof(Index));
+            
         }
-
+        // GET: Rooms/Details/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            return View(await _rooms.GetSingleAsync(x => x.Id == id));
+        }
         // GET: Rooms/Delete/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var rooms = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rooms == null)
-            {
-                return NotFound();
-            }
-
-            return View(rooms);
+            return View(await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Delete/5
@@ -142,15 +90,8 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var rooms = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(rooms);
-            await _context.SaveChangesAsync();
+            await _rooms.RemoveAsync(await _rooms.GetSingleAsync(x => x.Id == id));
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RoomsExists(Guid id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
         }
     }
 }

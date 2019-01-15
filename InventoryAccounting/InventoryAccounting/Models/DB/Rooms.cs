@@ -6,12 +6,12 @@ namespace InventoryAccounting.Models.DB
 {
 
     [ModelMetadataType(typeof(RoomsMetaData))]
-    public partial class Rooms
+    public partial class Rooms : IEntity
     {
         public Rooms()
         {
             Tmc = new HashSet<Tmc>();
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }

@@ -22,14 +22,14 @@ namespace InventoryAccounting.Controllers
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            return View(await _contracts.GetAllAsync(x => x.CompanyId));
+            return View(await _contracts.GetAllAsync(x => x.Company));
         }
 
         // GET: Contracts/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await _contracts.GetSingleAsync(x => x.Id == id, c => c.CompanyId));
+            return View(await _contracts.GetSingleAsync(x => x.Id == id, c => c.Company));
         }
 
         // GET: Contracts/Create
@@ -86,7 +86,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _contracts.GetSingleAsync(x=>x.Id == id, x=>x.CompanyId));
+            return View(await _contracts.GetSingleAsync(x=>x.Id == id, x=>x.Company));
         }
 
         // POST: Contracts/Delete/5

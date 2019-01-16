@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
@@ -23,7 +24,7 @@ namespace InventoryAccounting.Models.DB
         public DateTime? WriteOffDate { get; set; }
         public Guid RoomId { get; set; }
         public DateTime? WarrantyDate { get; set; }
-
+        
         public Acts Act { get; set; }
         public Persons ResponsiblePerson { get; set; }
         public Rooms Room { get; set; }

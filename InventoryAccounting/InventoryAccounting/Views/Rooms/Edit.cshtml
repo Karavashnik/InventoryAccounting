@@ -1,47 +1,47 @@
 ﻿@model InventoryAccounting.Models.DB.Rooms
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
-
-<h2>Edit</h2>
-
-<h4>Rooms</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="modal-header">
+    <h5 class="modal-title">Изменение помещения</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit" id="edit-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label"></label>
+                        <input asp-for="Name" class="form-control"/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Floor" class="col-form-label"></label>
+                        <input asp-for="Floor" class="form-control"/>
+                        <span asp-validation-for="Floor" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Number" class="col-form-label"></label>
+                        <input asp-for="Number" class="form-control"/>
+                        <span asp-validation-for="Number" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone" class="col-form-label"></label>
+                        <input asp-for="Phone" class="form-control"/>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Floor" class="control-label"></label>
-                <input asp-for="Floor" class="form-control" />
-                <span asp-validation-for="Floor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Number" class="control-label"></label>
-                <input asp-for="Number" class="form-control" />
-                <span asp-validation-for="Number" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="modal-footer">
+    <input form="edit-form" type="submit" value="Изменить" class="btn btn-dark mr-1"/>
 </div>
+
 

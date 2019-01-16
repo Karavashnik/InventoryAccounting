@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryAccounting.Models.DB
 {
@@ -11,6 +12,7 @@ namespace InventoryAccounting.Models.DB
         [Required]
         [Display(Name = "Номер акта")]
         public int ActNumber { get; set; }
+        [ForeignKey("Contracts")]
         [Display(Name = "Договор")]
         public Guid? ContractId { get; set; }
         [Required]

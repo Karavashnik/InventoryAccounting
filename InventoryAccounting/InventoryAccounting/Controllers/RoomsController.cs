@@ -46,7 +46,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return View(await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView(await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Edit/5
@@ -69,20 +69,21 @@ namespace InventoryAccounting.Controllers
                 }
                 throw;
             }
-            return RedirectToAction(nameof(Index));
+            
+            return PartialView(await _rooms.GetSingleAsync(x => x.Id == rooms.Id));
             
         }
         // GET: Rooms/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView("DetailsModal", await _rooms.GetSingleAsync(x => x.Id == id));
         }
         // GET: Rooms/Delete/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView("DeleteModal", await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Delete/5

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryAccounting.Models.DB
 {
@@ -29,6 +27,7 @@ namespace InventoryAccounting.Models.DB
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime PurchaseDate { get; set; }
         [Required]
+        [ForeignKey("Persons")]
         [Display(Name = "Ответственное лицо")]
         public Guid ResponsiblePersonId { get; set; }
         [Required]
@@ -38,18 +37,23 @@ namespace InventoryAccounting.Models.DB
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? WriteOffDate { get; set; }
         [Required]
+        [ForeignKey("Rooms")]
         [Display(Name = "Помещение")]
         public Guid RoomId { get; set; }
         [Display(Name = "Акт")]
+        [ForeignKey("Acts")]
         public int? ActId { get; set; }
         [Display(Name = "Гарантия")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? WarrantyDate { get; set; }
 
+        [ForeignKey("ActId")]
         [Display(Name = "Акт")]
         public Acts Act { get; set; }
+        [ForeignKey("ResponsiblePersonId")]
         [Display(Name = "Ответственное лицо")]
         public Persons ResponsiblePerson { get; set; }
+        [ForeignKey("RoomId")]
         [Display(Name = "Помещение")]
         public Rooms Room { get; set; }
     }

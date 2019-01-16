@@ -8,7 +8,7 @@
     <div class="container-fluid my-2">
         <div class="row">
             <h2>Товарно-материальные ценности</h2>
-            <a asp-action="Create" class="fas fa-plus-circle fa-3x ml-auto text-dark"></a>
+            <a asp-action="Create" class="fas fa-plus-circle fa-2x ml-auto text-dark"></a>
         </div>
     </div>
     <table class="table">
@@ -88,9 +88,9 @@
                         @Html.DisplayFor(modelItem => item.Room.Name)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.InventoryNumber" class="far fa-edit text-dark fa-2x"></a> 
-                        <a asp-action="Details" asp-route-id="@item.InventoryNumber" class="fas fa-info-circle text-dark fa-2x"></a> 
-                        <a asp-action="Delete" asp-route-id="@item.InventoryNumber" class="far fa-trash-alt text-dark fa-2x"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="far fa-edit text-dark fa-1x"></a> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="fas fa-info-circle text-dark fa-1x"></a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="far fa-trash-alt text-dark fa-1x"></a>
                     </td>
                 </tr>
             }

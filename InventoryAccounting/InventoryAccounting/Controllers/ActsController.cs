@@ -24,7 +24,7 @@ namespace InventoryAccounting.Controllers
         // GET: Acts
         public async Task<IActionResult> Index()
         {
-            return View(await _acts.GetAllAsync(acts => acts.ContractId));
+            return View(await _acts.GetAllAsync(acts => acts.Contract));
         }
 
         // GET: Acts/Details/5
@@ -32,7 +32,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await _acts.GetSingleAsync(act => act.ContractId == id, act => act.ContractId));
+            return View(await _acts.GetSingleAsync(act => act.ContractId == id, act => act.Contract));
         }
 
         // GET: Acts/Create
@@ -91,7 +91,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _acts.GetSingleAsync(act => act.Id == id, act => act.Id));
+            return View(await _acts.GetSingleAsync(act => act.Id == id));
         }
 
         // POST: Acts/Delete/5

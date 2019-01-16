@@ -24,7 +24,7 @@ namespace InventoryAccounting.Models
 
             //Apply eager loading
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                dbQuery = dbQuery.Include(navigationProperty.ToString());
+                dbQuery = dbQuery.Include(navigationProperty);
             list = await dbQuery
                 .AsNoTracking()
                 .ToListAsync();

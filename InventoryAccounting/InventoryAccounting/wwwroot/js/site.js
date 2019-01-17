@@ -23,7 +23,7 @@
 // });
 $(function () {
     var placeholderElement = $('#modal-placeholder');
-    $('a[data-toggle="modal"]').click(function (event) {
+    $(document).on('click', 'a[data-toggle="modal"]',function (event) {
         var url = $(this).data('url');
         var id = $(this).data('id');
         var address = id === undefined ? url : url + "/" + id;        
@@ -41,18 +41,33 @@ $(function () {
         $.post(actionUrl, dataToSend).done(function (data) {
             var newBody = $('.modal-body', data);
             placeholderElement.find('.modal-body').replaceWith(newBody);
-
+            
             // find IsValid input field and check it's value
             // if it's valid then hide modal window
             var isValid = newBody.find('[name="IsValid"]').val() == 'True';
             if (isValid) {
                 var tableElement = $('#main-table');
                 var tableUrl = tableElement.data('url');
-                $.get(tableUrl).done(function (table) {
+                $.get(tableUrl).done(function (table) {                    
                     tableElement.replaceWith(table);
                 });
-                placeholderElement.find('.modal').modal('hide');
             }
+            placeholderElement.find('.modal').modal('hide');
+        });
+    });
+    placeholderElement.on('click', '[data-delete="modal"]', function (event) {
+        event.preventDefault();
+        var form = $(this).parents('.modal').find('form');
+        var actionUrl = form.attr('action');
+        var dataToSend = form.serialize();
+
+        $.post(actionUrl, dataToSend).done(function (data) {            
+            var tableElement = $('#main-table');
+            var tableUrl = tableElement.data('url');
+            $.get(tableUrl).done(function (table) {
+                tableElement.replaceWith(table);
+            });
+            placeholderElement.find('.modal').modal('hide');            
         });
     });
     $(placeholderElement).on('hidden.bs.modal', function () {
@@ -60,6 +75,6 @@ $(function () {
         $(this).removeData('bs.modal');
         // and empty the modal-content element
         $(placeholderElement).empty();
-    });
+    });  
     
 });

@@ -42,7 +42,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Floor,Number,Phone")] Rooms rooms)
+        public async Task<IActionResult> Create([Bind("Id, Name,Floor,Number,Phone")] Rooms rooms)
         {
             await _rooms.AddAsync(rooms);
             
@@ -63,7 +63,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Name,Floor,Number,Phone")] Rooms rooms)
+        public async Task<IActionResult> Edit([Bind("Id, Name,Floor,Number,Phone")] Rooms rooms)
         {
             try
             {
@@ -83,15 +83,15 @@ namespace InventoryAccounting.Controllers
         }
         // GET: Rooms/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            return PartialView("DetailsModal", await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView("Details", await _rooms.GetSingleAsync(x => x.Id == id));
         }
         // GET: Rooms/Delete/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return PartialView("DeleteModal", await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView("Delete", await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Delete/5
@@ -100,7 +100,7 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _rooms.RemoveAsync(await _rooms.GetSingleAsync(x => x.Id == id));
-            return RedirectToAction(nameof(Index));
+            return PartialView("Delete");
         }
     }
 }

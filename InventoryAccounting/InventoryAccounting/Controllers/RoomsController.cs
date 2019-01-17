@@ -21,13 +21,19 @@ namespace InventoryAccounting.Controllers
         // GET: Rooms
         public async Task<IActionResult> Index()
         {
-            return View(await _rooms.GetAllAsync());
+            var rooms = await _rooms.GetAllAsync();
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+            {
+                return PartialView("_Table", rooms);
+            }
+            return View(rooms);
         }
 
         // GET: Rooms/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView("Create");
         }
 
         // POST: Rooms/Create
@@ -39,14 +45,16 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> Create([Bind("Name,Floor,Number,Phone")] Rooms rooms)
         {
             await _rooms.AddAsync(rooms);
-            return RedirectToAction(nameof(Index));
+            
+            //return RedirectToAction(nameof(Index));
+            return PartialView("Create", rooms);
         }
 
         // GET: Rooms/Edit/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return PartialView(await _rooms.GetSingleAsync(x => x.Id == id));
+            return PartialView("Edit", await _rooms.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: Rooms/Edit/5
@@ -67,11 +75,11 @@ namespace InventoryAccounting.Controllers
                 {
                     return NotFound();
                 }
+
                 throw;
             }
-            
-            return PartialView(await _rooms.GetSingleAsync(x => x.Id == rooms.Id));
-            
+            return PartialView("Edit", rooms);
+
         }
         // GET: Rooms/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]

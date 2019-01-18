@@ -1,0 +1,30 @@
+﻿@model IEnumerable<InventoryAccounting.Models.DB.Companies>
+<table class="table" id="main-table" data-url="@Url.Action("Index")">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Unp)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Address)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.DirectorsName)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.DirectorsPhone)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Unp)</td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td>@Html.DisplayFor(modelItem => item.DirectorsName)</td>
+            <td>@Html.DisplayFor(modelItem => item.DirectorsPhone)</td>
+            <td>
+                <a href="#" class="far fa-edit text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Edit")" data-id="@item.Id"></a>
+                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Details")" data-id="@item.Id"></a>
+                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Delete")" data-id="@item.Id"></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

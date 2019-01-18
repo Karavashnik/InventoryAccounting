@@ -4,51 +4,15 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div id="modal-placeholder"></div>
+    
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DirectorsName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DirectorsPhone)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DirectorsName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DirectorsPhone)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Unp">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Unp">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Unp">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="container-fluid my-2">
+        <div class="row">
+            <h2>Компании</h2>
+            <a href="#" class="ml-auto text-dark fas fa-plus-circle fa-2x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Create")"></a>
+        </div>
+    </div>
+    @await Html.PartialAsync("_Table", Model)
+</div>

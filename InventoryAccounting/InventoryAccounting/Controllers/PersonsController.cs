@@ -22,20 +22,26 @@ namespace InventoryAccounting.Controllers
         // GET: Persons
         public async Task<IActionResult> Index()
         {
-            return View(await _persons.GetAllAsync());
+            var persons = await _persons.GetAllAsync();
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+            {
+                return PartialView("_Table", persons);
+            }
+            return View(persons);
         }
 
         // GET: Persons/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await _persons.GetSingleAsync(x=>x.Id == id));
+            return PartialView(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
         // GET: Persons/Create
         public IActionResult Create()
         {
-            return View();
+            return PartialView("Create");
         }
 
         // POST: Persons/Create
@@ -44,17 +50,17 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
+        public async Task<IActionResult> Create([Bind("Id,PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
         {
             await _persons.AddAsync(person);
-            return RedirectToAction(nameof(Index));
+            return PartialView("Create", person);
         }
 
         // GET: Persons/Edit/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return View(await _persons.GetSingleAsync(x=>x.Id == id));
+            return PartialView(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: Persons/Edit/5
@@ -63,7 +69,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
+        public async Task<IActionResult> Edit([Bind("Id,PersonnelNumber,LastName,FirstName,MiddleName,DateOfBirth,PassportDetails,Education,DateOfEmployment,Phone,Email,Post")] Persons person)
         {
             try
             {
@@ -77,14 +83,14 @@ namespace InventoryAccounting.Controllers
                 }
                 throw;
             }
-            return RedirectToAction(nameof(Index));
+            return PartialView("Edit", person);
         }
 
         // GET: Persons/Delete/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Persons>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _persons.GetSingleAsync(x=>x.Id == id));
+            return PartialView(await _persons.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: ResponsiblePersons/Delete/5
@@ -93,7 +99,7 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _persons.RemoveAsync(await _persons.GetSingleAsync(x => x.Id == id));
-            return RedirectToAction(nameof(Index));
+            return PartialView("Delete");
         }
     }
 }

@@ -22,7 +22,7 @@
 //     modal.find('.modal-content').load(url);
 // });
 $(function () {
-    var placeholderElement = $('#modal-placeholder');
+    var placeholderElement = $('#modal-placeholder').modal('handleUpdate');
     $(document).on('click', 'a[data-toggle="modal"]',function (event) {
         var url = $(this).data('url');
         var id = $(this).data('id');
@@ -75,6 +75,6 @@ $(function () {
         $(this).removeData('bs.modal');
         // and empty the modal-content element
         $(placeholderElement).empty();
-    });  
-    
+        $(".modal-backdrop").remove();
+    });    
 });

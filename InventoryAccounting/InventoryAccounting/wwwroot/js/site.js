@@ -24,10 +24,8 @@
 $(function () {
     var placeholderElement = $('#modal-placeholder').modal('handleUpdate');
     $(document).on('click', 'a[data-toggle="modal"]',function (event) {
-        var url = $(this).data('url');
-        var id = $(this).data('id');
-        var address = id === undefined ? url : url + "/" + id;        
-        $.get(address).done(function (data) {
+        var url = $(this).data('url');     
+        $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
         });
@@ -50,9 +48,9 @@ $(function () {
                 var tableUrl = tableElement.data('url');
                 $.get(tableUrl).done(function (table) {                    
                     tableElement.replaceWith(table);
+                    placeholderElement.find('.modal').modal('hide');
                 });
-            }
-            placeholderElement.find('.modal').modal('hide');
+            }            
         });
     });
     placeholderElement.on('click', '[data-delete="modal"]', function (event) {
@@ -76,5 +74,53 @@ $(function () {
         // and empty the modal-content element
         $(placeholderElement).empty();
         $(".modal-backdrop").remove();
-    });    
+    });
+
+    // $('#CompanySelect').change(function () {
+    //     var companyId = $(this).val();
+    //     $.ajax({
+    //         url: '@Url.Action("GetCompanies ","Contracts")',
+    //         data: { CompanyId: companyId },
+    //         datatype: "json",
+    //         success: function (data) {
+    //             $.each(data, function (i, company) {
+    //                 companyId.append(
+    //                     $('<option></option>').val(company.Id).html(company.Name)
+    //                 );
+    //             });
+    //
+    //         }
+    //     })
+    // });
+    
+    $("#CompanySelect").change(function () {
+        var companyId = $(this).val();
+        $.ajax({
+            url: 'GetCompanies',
+            data: { CompanyId: companyId },
+            //datatype: "json",
+            success: function(companies) {
+                var items = '<option>Выберите компанию</option>';
+                $.each(companies, function (i, company) {
+                    items += "<option value='" + company.Id + "'>" + company.Name + "</option>";
+                });
+                console.log("Executed");
+            }
+        });    
+        
+     });
+    // $('#CompanySelect').change(function () {
+    //     var URL = '@Url.Action("GetCompanies","Contracts")';
+    //     $.getJSON(URL + '/' + $('#CompanyId').val(), function (data) {
+    //         var items = '<option>Выберите компанию</option>';
+    //         $.each(data, function (i, company) {
+    //             items += "<option value='" + company.Id + "'>" + state.Name + "</option>";
+    //             // state.Value cannot contain ' character. We are OK because state.Value = cnt++;
+    //         });
+    //         $('#StatesID').html(items);
+    //         $('#StatesDivID').show();
+    //
+    //     });
+    // });
+    
 });

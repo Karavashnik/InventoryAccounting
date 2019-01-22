@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -22,20 +23,31 @@ namespace InventoryAccounting.Controllers
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            return View(await _contracts.GetAllAsync(x => x.Company));
+            var contracts = await _contracts.GetAllAsync(x => x.Company);
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+            {
+                return PartialView("_Table", contracts);
+            }
+            return View(contracts);
         }
 
         // GET: Contracts/Details/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await _contracts.GetSingleAsync(x => x.Id == id, c => c.Company));
+            return PartialView(await _contracts.GetSingleAsync(x => x.Id == id, c => c.Company));
         }
 
         // GET: Contracts/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
+            //var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            //if (isAjax)
+            //{
+            //    return Json(await GetCompanies());
+            //}
+            ViewData["CompanyId"] = await GetCompanies();
             return View();
         }
 
@@ -45,7 +57,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
+        public async Task<IActionResult> Create([Bind("Id,CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
         {
             await _contracts.AddAsync(contracts);
             return RedirectToAction(nameof(Index));
@@ -65,7 +77,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
+        public async Task<IActionResult> Edit([Bind("Id,CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
         {
             try
             {
@@ -86,7 +98,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _contracts.GetSingleAsync(x=>x.Id == id, x=>x.Company));
+            return PartialView(await _contracts.GetSingleAsync(x=>x.Id == id, x=>x.Company));
         }
 
         // POST: Contracts/Delete/5
@@ -95,7 +107,13 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _contracts.RemoveAsync(await _contracts.GetSingleAsync(x => x.Id == id));
-            return RedirectToAction(nameof(Index));
+            return PartialView("Delete");
+        }
+        
+        [HttpGet]
+        public async Task<SelectList> GetCompanies()
+        {
+            return new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
         }
     }
 }

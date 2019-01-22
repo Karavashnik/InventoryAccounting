@@ -34,7 +34,7 @@
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">
-                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    @* <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" /> *@
                     <input type="hidden" asp-for="Id"/>
                     <input type="submit" data-delete="modal" class="btn btn-dark" value="Удалить"/>
                 </form>

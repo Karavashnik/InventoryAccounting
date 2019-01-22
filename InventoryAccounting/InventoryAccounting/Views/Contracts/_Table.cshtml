@@ -1,0 +1,32 @@
+﻿@model IEnumerable<InventoryAccounting.Models.DB.Contracts>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.ContractNumber)</th>
+        <th>@Html.DisplayNameFor(model => model.Company)</th>
+        <th>@Html.DisplayNameFor(model => model.Type)</th>
+        <th>@Html.DisplayNameFor(model => model.CompilationDate)</th>
+        <th>@Html.DisplayNameFor(model => model.ExpirationDate)</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.ContractNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.Company)</td>
+            <td>@Html.DisplayFor(modelItem => item.Type)</td>
+            <td>@Html.DisplayFor(modelItem => item.CompilationDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.ExpirationDate)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="far fa-edit text-dark fa-1x"></a>
+                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Details")" data-id="@item.Id"></a>
+                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Delete")" data-id="@item.Id"></a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

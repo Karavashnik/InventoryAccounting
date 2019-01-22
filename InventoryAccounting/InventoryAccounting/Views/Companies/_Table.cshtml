@@ -20,9 +20,9 @@
             <td>@Html.DisplayFor(modelItem => item.DirectorsName)</td>
             <td>@Html.DisplayFor(modelItem => item.DirectorsPhone)</td>
             <td>
-                <a href="#" class="far fa-edit text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Edit")" data-id="@item.Id"></a>
-                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Details")" data-id="@item.Id"></a>
-                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Delete")" data-id="@item.Id"></a>
+                <a href="#" class="far fa-edit text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Edit", Id=item.Id})"></a>
+                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Details", Id=item.Id})"></a>
+                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Delete", Id=item.Id})"></a>
             </td>
         </tr>
     }

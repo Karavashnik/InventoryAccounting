@@ -12,6 +12,7 @@ namespace InventoryAccounting.Models.DB
         [Required]
         [Display(Name = "Номер акта")]
         public int ActNumber { get; set; }
+        [Required]
         [ForeignKey("Contracts")]
         [Display(Name = "Договор")]
         public Guid? ContractId { get; set; }

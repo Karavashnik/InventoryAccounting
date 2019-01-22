@@ -19,10 +19,11 @@
             <div class="form-group">
                 <label asp-for="CompanyId" class="col-form-label"></label>
                 <div class="input-group">
-                    @* <select id="CompanyIdSelect" asp-for="CompanyId" class="form-control"></select>  *@
-                    @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyId,new { Id = "CompanySelect", Class = "form-control"})
+                    <select id="CompanySelect" asp-for="CompanyId" class="form-control"></select> 
+                    @* @Html.DropDownList("CompanyId", new { Id = "CompanySelect", Class = "form-control"}) *@
                     <div class="input-group-append">
-                        <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new { controller = "Companies", action = "Create"})">Добавить</a>
+                        <a href="#" class="btn btn-outline-secondary" onclick="UpdateCompanies()"><i class="fas fa-redo-alt"></i></a>
+                        <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Companies", action = "Create"})">Добавить</a>
                     </div>
                 </div>
             </div>
@@ -48,3 +49,8 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(){
+        UpdateCompanies();
+    });
+</script>

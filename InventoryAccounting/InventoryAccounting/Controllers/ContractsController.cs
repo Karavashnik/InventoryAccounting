@@ -40,14 +40,8 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Contracts/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            //var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
-            //if (isAjax)
-            //{
-            //    return Json(await GetCompanies());
-            //}
-            ViewData["CompanyId"] = await GetCompanies();
             return View();
         }
 
@@ -62,12 +56,28 @@ namespace InventoryAccounting.Controllers
             await _contracts.AddAsync(contracts);
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult CreateModal()
+        {
+            return PartialView();
+        }
+
+        // POST: Contracts/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateModel]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateModal([Bind("Id,CompanyId,ContractNumber,Type,ExpirationDate,CompilationDate")] Contracts contracts)
+        {
+            await _contracts.AddAsync(contracts);
+            return PartialView("CreateModal", contracts);
+        }
 
         // GET: Contracts/Edit/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
+            //ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
             return View(await _contracts.GetSingleAsync(x=>x.Id == id));
         }
 
@@ -110,10 +120,11 @@ namespace InventoryAccounting.Controllers
             return PartialView("Delete");
         }
         
+        [HttpPost]
         [HttpGet]
-        public async Task<SelectList> GetCompanies()
+        public async Task<JsonResult> GetCompanies()
         {
-            return new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
+            return Json(await _contracts.GetCompaniesAsync());
         }
     }
 }

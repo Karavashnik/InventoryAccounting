@@ -16,7 +16,7 @@ namespace InventoryAccounting.Models
         //   return await context.Acts.Include(acts => acts.ContractId).ToListAsync();
         //}
 
-        public async Task<IList<Contracts>> GetAllContractsAsync()
+        public async Task<IList<Contracts>> GetContractsAsync()
         {
             return await context.Contracts.ToListAsync();
         }

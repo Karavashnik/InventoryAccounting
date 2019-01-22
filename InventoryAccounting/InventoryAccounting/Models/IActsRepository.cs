@@ -8,6 +8,6 @@ namespace InventoryAccounting.Models
 {
     public interface IActsRepository : IGenericDataRepository<Acts>
     {
-        Task<IList<Contracts>> GetAllContractsAsync();
+        Task<IList<Contracts>> GetContractsAsync();
     }
 }

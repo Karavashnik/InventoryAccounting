@@ -24,21 +24,26 @@ namespace InventoryAccounting.Controllers
         // GET: Acts
         public async Task<IActionResult> Index()
         {
-            return View(await _acts.GetAllAsync(acts => acts.Contract));
+            var acts = await _acts.GetAllAsync(x => x.Contract);
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+            {
+                return PartialView("_Table", acts);
+            }
+            return View(acts);
         }
 
         // GET: Acts/Details/5
-        [HttpGet("Acts/Details/{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            return View(await _acts.GetSingleAsync(act => act.ContractId == id, act => act.Contract));
+            return PartialView(await _acts.GetSingleAsync(act => act.Id == id, act => act.Contract));
         }
 
         // GET: Acts/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
+            ViewData["CompanyId"] = await GetContracts();
             return View();
         }
 
@@ -48,18 +53,17 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
+        public async Task<IActionResult> Create([Bind("Id,ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
             await _acts.AddAsync(acts);
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Acts/Edit/5
-        [HttpGet("Acts/Edit/{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
+            //ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
             return View(await _acts.GetSingleAsync(act => act.Id == id));
         }
 
@@ -69,7 +73,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
+        public async Task<IActionResult> Edit([Bind("Id,ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
             try
             {
@@ -87,11 +91,10 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Delete/5
-        [HttpGet("Acts/Delete/{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            return View(await _acts.GetSingleAsync(act => act.Id == id));
+            return PartialView(await _acts.GetSingleAsync(act => act.Id == id));
         }
 
         // POST: Acts/Delete/5
@@ -100,13 +103,18 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _acts.RemoveAsync(await _acts.GetSingleAsync(act=> act.Id == id));
-            return RedirectToAction(nameof(Index));
+            return PartialView("Delete");
         }
-
+        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetContracts()
+        {
+            return Json(await _acts.GetContractsAsync());
+        }
         
         public async Task<ActionResult> CreateModal()
         {
-            ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
+            //ViewData["ContractId"] = new SelectList(await _acts.GetContractsAsync(), "Id", "ContractNumber");
             return PartialView("CreateModal");
         }
 

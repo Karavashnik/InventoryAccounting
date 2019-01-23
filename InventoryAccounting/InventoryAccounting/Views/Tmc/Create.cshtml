@@ -4,13 +4,7 @@
     ViewData["Title"] = "Добавить";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div id="modal-container" class="modal fade bd-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-        </div>
-    </div>
-</div>
+<div id="modal-placeholder"></div>
 <div class="row my-2">
     <div class="col-md-12">
         <h2>Добавление товарно-материальных ценностей</h2>
@@ -67,27 +61,30 @@
                 <div class="form-group col-md-4">
                     <label asp-for="ResponsiblePersonId" class="col-form-label"></label>
                     <div class="input-group">
-                        <select asp-for="ResponsiblePersonId" class="form-control" asp-items="ViewBag.PesponsiblePersonNumber"></select>
+                        <select id="PersonsSelect" asp-for="ResponsiblePersonId" class="form-control"></select> 
                         <div class="input-group-append">
-                            <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Create")">Добавить</a>
+                            <a href="#" class="btn btn-outline-secondary" onclick="UpdatePersons()"><i class="fas fa-redo-alt"></i></a>
+                            <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Persons", action = "Create"})">Добавить</a>
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-md-4">
                     <label asp-for="RoomId" class="col-form-label"></label>
                     <div class="input-group">
-                        <select asp-for="RoomId" class="custom-select" asp-items="ViewBag.RoomId"></select>
+                        <select id="RoomsSelect" asp-for="RoomId" class="form-control"></select> 
                         <div class="input-group-append">
-                            <a asp-controller="Rooms" asp-action="Create" class="btn btn-outline-secondary">Добавить</a>
+                            <a href="#" class="btn btn-outline-secondary" onclick="UpdateRooms()"><i class="fas fa-redo-alt"></i></a>
+                            <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Rooms", action = "Create"})">Добавить</a>
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-md-4">
                     <label asp-for="ActId" class="col-form-label"></label>
                     <div class="input-group">
-                        <select asp-for="ActId" class="custom-select" asp-items="ViewBag.ActId"></select>
+                        <select id="ActsSelect" asp-for="ActId" class="form-control"></select> 
                         <div class="input-group-append">
-                            <a asp-controller="Acts" asp-action="CreateModal" asp-route-action="Acts/Create" class="btn btn-outline-secondary" data-target=".bd-modal-xl" data-toggle="modal">Добавить</a>
+                            <a href="#" class="btn btn-outline-secondary" onclick="UpdateActs()"><i class="fas fa-redo-alt"></i></a>
+                            <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Acts", action = "CreateModal"})">Добавить</a>
                         </div>
                     </div>
                 </div>
@@ -99,5 +96,12 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(){
+        UpdatePersons();
+        UpdateActs();
+        UpdateRooms();
+    });
+</script>
 
 

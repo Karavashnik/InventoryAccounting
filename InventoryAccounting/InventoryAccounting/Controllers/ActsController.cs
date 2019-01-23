@@ -43,7 +43,7 @@ namespace InventoryAccounting.Controllers
         // GET: Acts/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = await GetContracts();
+            //ViewData["CompanyId"] = await GetContracts();
             return View();
         }
 
@@ -105,26 +105,25 @@ namespace InventoryAccounting.Controllers
             await _acts.RemoveAsync(await _acts.GetSingleAsync(act=> act.Id == id));
             return PartialView("Delete");
         }
-        [HttpPost]
-        [HttpGet]
-        public async Task<JsonResult> GetContracts()
-        {
-            return Json(await _acts.GetContractsAsync());
-        }
         
-        public async Task<ActionResult> CreateModal()
+        public ActionResult CreateModal()
         {
-            //ViewData["ContractId"] = new SelectList(await _acts.GetContractsAsync(), "Id", "ContractNumber");
             return PartialView("CreateModal");
         }
 
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task CreateModal([Bind("ContractId, ActNumber, Type, CompilationDate")] Acts acts)
+        public async Task<IActionResult> CreateModal([Bind("Id,ContractId, ActNumber, Type, CompilationDate")] Acts acts)
         {
             await _acts.AddAsync(acts);
-            //return RedirectToAction(nameof(Index));
+            return PartialView("CreateModal", acts);
+        }
+        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetActs()
+        {
+            return Json(await _acts.GetAllAsync());
         }
     }
 }

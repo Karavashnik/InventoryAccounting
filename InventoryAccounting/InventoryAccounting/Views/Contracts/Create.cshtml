@@ -19,8 +19,7 @@
             <div class="form-group">
                 <label asp-for="CompanyId" class="col-form-label"></label>
                 <div class="input-group">
-                    <select id="CompanySelect" asp-for="CompanyId" class="form-control"></select> 
-                    @* @Html.DropDownList("CompanyId", new { Id = "CompanySelect", Class = "form-control"}) *@
+                    <select id="CompaniesSelect" asp-for="CompanyId" class="form-control"></select> 
                     <div class="input-group-append">
                         <a href="#" class="btn btn-outline-secondary" onclick="UpdateCompanies()"><i class="fas fa-redo-alt"></i></a>
                         <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Companies", action = "Create"})">Добавить</a>

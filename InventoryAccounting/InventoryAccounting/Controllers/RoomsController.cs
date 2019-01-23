@@ -46,7 +46,6 @@ namespace InventoryAccounting.Controllers
         {
             await _rooms.AddAsync(rooms);
             
-            //return RedirectToAction(nameof(Index));
             return PartialView("Create", rooms);
         }
 
@@ -101,6 +100,12 @@ namespace InventoryAccounting.Controllers
         {
             await _rooms.RemoveAsync(await _rooms.GetSingleAsync(x => x.Id == id));
             return PartialView("Delete");
+        }
+        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetRooms()
+        {
+            return Json(await _rooms.GetAllAsync());
         }
     }
 }

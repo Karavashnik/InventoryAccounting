@@ -100,5 +100,11 @@ namespace InventoryAccounting.Controllers
             await _companies.RemoveAsync(await _companies.GetSingleAsync(x => x.Id == id));
             return PartialView("Delete");
         }
+        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetCompanies()
+        {
+            return Json(await _companies.GetAllAsync());
+        }
     }
 }

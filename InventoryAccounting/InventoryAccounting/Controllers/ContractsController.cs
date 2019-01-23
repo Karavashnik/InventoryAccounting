@@ -122,9 +122,9 @@ namespace InventoryAccounting.Controllers
         
         [HttpPost]
         [HttpGet]
-        public async Task<JsonResult> GetCompanies()
+        public async Task<JsonResult> GetContracts()
         {
-            return Json(await _contracts.GetCompaniesAsync());
+            return Json(await _contracts.GetAllAsync());
         }
     }
 }

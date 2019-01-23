@@ -52,27 +52,11 @@
         $(placeholderElement).empty();
         $(".modal-backdrop").remove();        
     });
-    $("#CompanySelect").on("show", UpdateCompanies());
 });
-function UpdateContracts() {
-    AjaxCall('/Acts/GetContracts', null).done(function (response) {
+function UpdateRooms() {
+    AjaxCall('/Rooms/GetRooms', null).done(function (response) {
         if (response.length > 0) {
-            var select = $('#ContractSelect');
-            select.html('');
-            var options = '';
-            for (var i = 0; i < response.length; i++) {
-                options += '<option value="' + response[i].id + '">' + response[i].contractNumber + '</option>';
-            }
-            select.append(options);
-        }
-    }).fail(function (error) {
-        alert(error.StatusText);
-    });
-}
-function UpdateCompanies() {
-    AjaxCall('/Contracts/GetCompanies', null).done(function (response) {
-        if (response.length > 0) {
-            var select = $('#CompanySelect');
+            var select = $('#RoomsSelect');
             select.html('');
             var options = '';
             for (var i = 0; i < response.length; i++) {
@@ -80,9 +64,59 @@ function UpdateCompanies() {
             }
             select.append(options);
         }
-    }).fail(function (error) {
-        alert(error.StatusText);
-    });
+    })
+}
+function UpdateActs() {
+    AjaxCall('/Acts/GetActs', null).done(function (response) {
+        if (response.length > 0) {
+            var select = $('#ActsSelect');
+            select.html('');
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += '<option value="' + response[i].id + '">' + response[i].actNumber + '</option>';
+            }
+            select.append(options);
+        }
+    })
+}
+function UpdatePersons() {
+    AjaxCall('/Persons/GetPersons', null).done(function (response) {
+        if (response.length > 0) {
+            var select = $('#PersonsSelect');
+            select.html('');
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += '<option value="' + response[i].id + '">' + response[i].lastName + response[i].firstName + '</option>';
+            }
+            select.append(options);
+        }
+    })
+}
+function UpdateContracts() {
+    AjaxCall('/Contracts/GetContracts', null).done(function (response) {
+        if (response.length > 0) {
+            var select = $('#ContractsSelect');
+            select.html('');
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += '<option value="' + response[i].id + '">' + response[i].contractNumber + '</option>';
+            }
+            select.append(options);
+        }
+    })
+}
+function UpdateCompanies() {
+    AjaxCall('/Companies/GetCompanies', null).done(function (response) {
+        if (response.length > 0) {
+            var select = $('#CompaniesSelect');
+            select.html('');
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+            select.append(options);
+        }
+    })
 }
 function AjaxCall(url, data, type) {
     return $.ajax({

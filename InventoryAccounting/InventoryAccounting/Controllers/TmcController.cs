@@ -32,15 +32,12 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Details(Guid id)
         {
-            return View(await _tmcs.GetSingleAsync(tmc=> tmc.Id == id, x=>x.ResponsiblePerson, x=>x.Room, x=>x.Act));
+            return PartialView(await _tmcs.GetSingleAsync(tmc=> tmc.Id == id, x=>x.ResponsiblePerson, x=>x.Room, x=>x.Act));
         }
 
         // GET: TmcController/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            ViewData["ActId"] = new SelectList(await _tmcs.GetActsAsync(), "Id", "ActNumber");
-            ViewData["PesponsiblePersonId"] = new SelectList(await _tmcs.GetPersonsAsync(), "Id", "FirstName" + "LastName");
-            ViewData["RoomId"] = new SelectList(await _tmcs.GetRoomsAsync(), "Id", "Name");
             return View();
         }
 
@@ -50,7 +47,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
+        public async Task<IActionResult> Create([Bind("Id,InventoryNumber,Name,Description,Type,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             await _tmcs.AddAsync(tmc);
             return RedirectToAction(nameof(Index));
@@ -61,9 +58,6 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            ViewData["ActId"] = new SelectList(await _tmcs.GetActsAsync(), "Id", "ActNumber");
-            ViewData["PesponsiblePersonId"] = new SelectList(await _tmcs.GetPersonsAsync(), "Id", "FirstName" + "LastName");
-            ViewData["RoomId"] = new SelectList(await _tmcs.GetRoomsAsync(), "Id", "Name");
             return View(await _tmcs.GetSingleAsync(tmc => tmc.Id == id, x => x.ResponsiblePerson, x => x.Room, x => x.Act));
         }
 
@@ -73,7 +67,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("InventoryNumber,Name,Description,Type,PurchaseDate,PesponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
+        public async Task<IActionResult> Edit([Bind("Id,InventoryNumber,Name,Description,Type,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             try
             {
@@ -95,7 +89,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return View(await _tmcs.GetSingleAsync(x=>x.Id == id));
+            return PartialView(await _tmcs.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: TmcController/Delete/5
@@ -104,7 +98,7 @@ namespace InventoryAccounting.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _tmcs.RemoveAsync(await _tmcs.GetSingleAsync(x => x.Id == id));
-            return RedirectToAction(nameof(Index));
+            return PartialView("Delete");
         }
     }
 }

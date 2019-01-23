@@ -10,10 +10,5 @@ namespace InventoryAccounting.Models
         public ContractsRepository(InventoryAccountingContext context) : base(context)
         {
         }
-
-        public async Task<IList<Companies>> GetCompaniesAsync()
-        {
-            return await context.Companies.ToListAsync();
-        }
     }
 }

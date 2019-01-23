@@ -10,10 +10,11 @@
     <div class="row">
         <div class="col-md-12">
             <form asp-action="CreateModal">
+                <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Id" class="col-form-label"></label>
-                    <input asp-for="Id" class="form-control" />
+                    <input asp-for="Id" class="form-control"/>
                     <span asp-validation-for="Id" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -23,7 +24,13 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="ContractId" class="col-form-label"></label>
-                    <select asp-for="ContractId" class ="form-control" asp-items="ViewBag.ContractNumber"></select>
+                    <div class="input-group">
+                        <select id="ContractsSelect" asp-for="ContractId" class="form-control"></select>
+                        <div class="input-group-append">
+                            <a href="#" class="btn btn-outline-secondary" onclick="UpdateContracts()"><i class="fas fa-redo-alt"></i></a>
+                            <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Contracts", action = "CreateModal"})">Добавить</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Добавить</button>

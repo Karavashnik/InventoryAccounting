@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<InventoryAccounting.Models.DB.Contracts>
 
-<table class="table">
+<table class="table" id="main-table" data-url="@Url.Action("Index")">
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.ContractNumber)</th>

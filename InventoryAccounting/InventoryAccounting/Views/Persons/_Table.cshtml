@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<InventoryAccounting.Models.DB.Persons>
 
-<table class="table">
+<table class="table" id="main-table" data-url="@Url.Action("Index")">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.PersonnelNumber)</th>
@@ -33,8 +33,8 @@
             <td>@Html.DisplayFor(modelItem => item.Post)</td>
             <td>
                 <a href="#" class="far fa-edit text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Edit", Id=item.Id})"></a>
-                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Edit", Id=item.Id})"></a>
-                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Edit", Id=item.Id})"></a>
+                <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Details", Id=item.Id})"></a>
+                <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Delete", Id=item.Id})"></a>
             </td>
         </tr>
 }

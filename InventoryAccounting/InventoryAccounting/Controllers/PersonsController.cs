@@ -101,5 +101,11 @@ namespace InventoryAccounting.Controllers
             await _persons.RemoveAsync(await _persons.GetSingleAsync(x => x.Id == id));
             return PartialView("Delete");
         }
+        [HttpPost]
+        [HttpGet]
+        public async Task<JsonResult> GetPersons()
+        {
+            return Json(await _persons.GetAllAsync());
+        }
     }
 }

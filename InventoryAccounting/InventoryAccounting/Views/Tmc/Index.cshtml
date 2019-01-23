@@ -4,96 +4,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div id="modal-placeholder"></div>
 <div class="row">
     <div class="container-fluid my-2">
         <div class="row">
             <h2>Товарно-материальные ценности</h2>
-            <a asp-action="Create" class="fas fa-plus-circle fa-2x ml-auto text-dark"></a>
+            <a asp-action="Create" class="ml-auto text-dark fas fa-plus-circle fa-2x"></a>
         </div>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.InventoryNumber)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.PurchaseDate)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.FactoryNumber)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.WriteOffDate)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.WarrantyDate)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Act)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.ResponsiblePerson)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Room)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InventoryNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PurchaseDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FactoryNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WriteOffDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WarrantyDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Act.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ResponsiblePerson.FirstName) @Html.DisplayFor(modelItem => item.ResponsiblePerson.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Room.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="far fa-edit text-dark fa-1x"></a> 
-                        <a asp-action="Details" asp-route-id="@item.Id" class="fas fa-info-circle text-dark fa-1x"></a> 
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="far fa-trash-alt text-dark fa-1x"></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @await Html.PartialAsync("_Table", Model)
 </div>

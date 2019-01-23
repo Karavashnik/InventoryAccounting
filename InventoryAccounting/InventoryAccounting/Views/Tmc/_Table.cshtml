@@ -1,0 +1,91 @@
+﻿@model IEnumerable<InventoryAccounting.Models.DB.Tmc>
+
+@{
+    Layout = null;
+}
+
+<table class="table" id="main-table" data-url="@Url.Action("Index")">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.InventoryNumber)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.PurchaseDate)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.FactoryNumber)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.WriteOffDate)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.WarrantyDate)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Act)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.ResponsiblePerson)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FactoryNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WriteOffDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WarrantyDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Act.ActNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResponsiblePerson.FirstName) @Html.DisplayFor(modelItem => item.ResponsiblePerson.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="far fa-edit text-dark fa-1x"></a>
+                    <a href="#" class="fas fa-info-circle text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Details", Id=item.Id})"></a>
+                    <a href="#" class="far fa-trash-alt text-dark fa-1x" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {Action="Delete", Id=item.Id})"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,46 +1,20 @@
-﻿@model InventoryAccounting.Models.DB.Acts
-
+﻿@using Microsoft.AspNetCore.Mvc.Abstractions
+@model InventoryAccounting.Models.DB.Acts
 @{
     ViewData["Title"] = "Добавление";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string action = ViewContext.RouteData.Values["Action"].ToString();
 }
 <div id="modal-placeholder"></div>
 <div class="row">
     <div class="col-md-12">
-        <h2>Добавление акта</h2>
+        <h2>@Html.Raw(action == "Create" ? "Добавление" : "Изменение") акта</h2>
         <hr/>
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ActNumber" class="col-form-label"></label>
-                <input asp-for="ActNumber" class="form-control"/>
-                <span asp-validation-for="ActNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContractId" class="col-form-label"></label>
-                <div class="input-group">
-                    <select id="ContractsSelect" asp-for="ContractId" class="form-control"></select> 
-                    <div class="input-group-append">
-                        <a href="#" class="btn btn-outline-secondary" onclick="UpdateContracts()"><i class="fas fa-redo-alt"></i></a>
-                        <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Contracts", action = "CreateModal"})">Добавить</a>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="col-form-label"></label>
-                <input asp-for="Type" class="form-control"/>
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompilationDate" class="col-form-label"></label>
-                <input asp-for="CompilationDate" type="date" class="form-control"/>
-                <span asp-validation-for="CompilationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Добавить" class="btn btn-dark"/>
-                <a asp-action="Index" class="btn btn-dark">Назад</a>
-            </div>
-        </form>
+        @await Html.PartialAsync("_Input", Model)
+        <div class="form-group">
+            <input type="submit" form="form" value="@Html.Raw(action == "Create" ? "Добавить" : "Изменить")" class="btn btn-dark"/>
+            <a asp-action="Index" class="btn btn-dark">Назад</a>
+        </div>
     </div>
 </div>
 <script type="text/javascript">

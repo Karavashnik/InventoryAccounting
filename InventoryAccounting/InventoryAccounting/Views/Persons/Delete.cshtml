@@ -13,52 +13,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.PersonnelNumber)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.PersonnelNumber)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.FirstName)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.FirstName)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.LastName)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.LastName)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.MiddleName)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.MiddleName)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.DateOfBirth)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.DateOfBirth)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.PassportDetails)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.PassportDetails)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Education)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Education)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.DateOfEmployment)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.DateOfEmployment)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Phone)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Phone)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Email)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Email)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Post)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Post)</span>
-                    </div>
-                </div>
+                @await Html.PartialAsync("_Info", Model)
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">

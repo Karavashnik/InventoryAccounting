@@ -42,6 +42,9 @@ namespace InventoryAccounting.Controllers
         // GET: Contracts/Create
         public IActionResult Create()
         {
+            ViewBag.Header = "Добавление договора";
+            ViewBag.Button = "Добавить";
+            ViewBag.Action = "Create";
             return View();
         }
 
@@ -58,6 +61,9 @@ namespace InventoryAccounting.Controllers
         }
         public IActionResult CreateModal()
         {
+            ViewBag.Header = "Добавление договора";
+            ViewBag.Button = "Добавить";
+            ViewBag.Action = "CreateModal";
             return PartialView();
         }
 
@@ -77,8 +83,11 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Contracts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
+            ViewBag.Header = "Изменение договора";
+            ViewBag.Button = "Изменить";
+            ViewBag.Action = "Edit";
             //ViewData["CompanyId"] = new SelectList(await _contracts.GetCompaniesAsync(), "Id", "Name");
-            return View(await _contracts.GetSingleAsync(x=>x.Id == id));
+            return View("Create", await _contracts.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: Contracts/Edit/5

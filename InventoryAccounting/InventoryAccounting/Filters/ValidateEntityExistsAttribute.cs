@@ -20,7 +20,7 @@ namespace InventoryAccounting.Filters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            Guid id = Guid.Empty;
+            Guid id;
 
             if (context.ActionArguments.ContainsKey("id"))
             {

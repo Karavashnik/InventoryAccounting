@@ -36,10 +36,12 @@ namespace InventoryAccounting.Controllers
         {
             return PartialView("Details", await _companies.GetSingleAsync(x => x.Id == id));
         }
-
         // GET: Companies/Create
         public IActionResult Create()
         {
+            ViewBag.Header = "Добавление компании";
+            ViewBag.Button = "Добавить";
+            ViewBag.Action = "Create";
             return PartialView("Create");
         }
 
@@ -59,7 +61,10 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Companies>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return PartialView("Edit", await _companies.GetSingleAsync(x => x.Id == id));
+            ViewBag.Header = "Изменение компании";
+            ViewBag.Button = "Изменить";
+            ViewBag.Action = "Edit";
+            return PartialView("Create", await _companies.GetSingleAsync(x => x.Id == id));
         }
 
         // POST: CompanyNames/Edit/5
@@ -82,7 +87,7 @@ namespace InventoryAccounting.Controllers
                 }
                 throw;
             }
-            return PartialView("Edit", companies);
+            return PartialView("Create", companies);
         }
 
         // GET: Companies/Delete/5

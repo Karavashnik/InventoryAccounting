@@ -13,28 +13,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.ContractNumber)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.ContractNumber)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Company)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Company)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Type)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.Type)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.CompilationDate)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.CompilationDate)</span>
-                    </div>
-                    <div class="row my-1">
-                        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.ExpirationDate)</span>
-                        <span class="col-md-8">@Html.DisplayFor(model => model.ExpirationDate)</span>
-                    </div>
-                </div>
+                @await Html.PartialAsync("_Info", Model)
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">

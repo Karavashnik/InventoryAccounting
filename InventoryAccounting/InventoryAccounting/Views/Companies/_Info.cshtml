@@ -1,0 +1,28 @@
+﻿@model InventoryAccounting.Models.DB.Companies
+
+@{
+    Layout = null;
+}
+
+<div class="container-fluid">
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Unp)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Unp)</span>
+    </div>
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Name)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Name)</span>
+    </div>
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Address)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Address)</span>
+    </div>
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.DirectorsName)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.DirectorsName)</span>
+    </div>
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.DirectorsPhone)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.DirectorsPhone)</span>
+    </div>
+</div>

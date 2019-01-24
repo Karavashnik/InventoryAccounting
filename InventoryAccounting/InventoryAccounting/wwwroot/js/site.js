@@ -1,4 +1,5 @@
 ﻿$(function () {
+    
     var placeholderElement = $('#modal-placeholder').modal('handleUpdate');
     $(document).on('click', 'a[data-toggle="modal"]',function (event) {
         var url = $(this).data('url');     

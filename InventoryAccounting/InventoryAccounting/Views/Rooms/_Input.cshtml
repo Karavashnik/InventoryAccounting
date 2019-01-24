@@ -1,0 +1,30 @@
+﻿@model InventoryAccounting.Models.DB.Rooms
+
+@{
+    Layout = null;
+}
+<form asp-action="@ViewBag.Action" id="form">
+    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="col-form-label"></label>
+        <input asp-for="Name" maxlength="30" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Floor" class="col-form-label"></label>
+        <input asp-for="Floor" maxlength="2" class="form-control"/>
+        <span asp-validation-for="Floor" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Number" class="col-form-label"></label>
+        <input asp-for="Number" maxlength="2" class="form-control"/>
+        <span asp-validation-for="Number" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" class="col-form-label"></label>
+        <input asp-for="Phone" maxlength="5" class="form-control"/>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+</form>
+

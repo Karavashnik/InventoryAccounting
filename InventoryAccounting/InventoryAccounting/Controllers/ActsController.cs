@@ -41,9 +41,9 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            //ViewData["CompanyId"] = await GetContracts();
+            ViewData["Action"] = "Create";
             return View();
         }
 
@@ -63,8 +63,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            //ViewData["ContractId"] = new SelectList(await _acts.GetAllContractsAsync(), "Id", "ContractNumber");
-            return View(await _acts.GetSingleAsync(act => act.Id == id));
+            return View("Create", await _acts.GetSingleAsync(act => act.Id == id));
         }
 
         // POST: Acts/Edit/5

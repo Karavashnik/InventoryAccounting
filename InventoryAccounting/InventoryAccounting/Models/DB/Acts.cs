@@ -15,9 +15,9 @@ namespace InventoryAccounting.Models.DB
 
         public Guid Id { get; set; }
         public Guid? ContractId { get; set; }
-        public int ActNumber { get; set; }
+        public int? ActNumber { get; set; }
         public string Type { get; set; }
-        public DateTime CompilationDate { get; set; }
+        public DateTime? CompilationDate { get; set; }
 
         public Contracts Contract { get; set; }
         public ICollection<Tmc> Tmc { get; set; }

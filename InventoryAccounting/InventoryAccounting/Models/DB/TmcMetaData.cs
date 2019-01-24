@@ -8,35 +8,35 @@ namespace InventoryAccounting.Models.DB
     {
         [Display(Name = "Id")]
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Инвентарный номер")]
         public int InventoryNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [MaxLength(80)]
         [Display(Name = "Название")]
         public string Name { get; set; }
         [MaxLength(255)]
         [Display(Name = "Описание")]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [MaxLength(50)]
         [Display(Name = "Тип")]
         public string Type { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Дата покупки")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime PurchaseDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [ForeignKey("Persons")]
         [Display(Name = "Ответственное лицо")]
         public Guid ResponsiblePersonId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Заводской номер")]
         public int FactoryNumber { get; set; }
         [Display(Name = "Дата списания")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? WriteOffDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [ForeignKey("Rooms")]
         [Display(Name = "Помещение")]
         public Guid RoomId { get; set; }

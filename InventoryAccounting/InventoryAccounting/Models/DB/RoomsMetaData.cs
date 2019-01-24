@@ -10,14 +10,14 @@ namespace InventoryAccounting.Models.DB
     {
         [Display(Name = "Id")]
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [MaxLength(10)]
         [Display(Name = "Название")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Этаж")]
         public int Floor { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Номер")]
         public int Number { get; set; }
         [MaxLength(15)]

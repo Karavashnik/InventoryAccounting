@@ -38,6 +38,9 @@ namespace InventoryAccounting.Controllers
         // GET: TmcController/Create
         public IActionResult Create()
         {
+            ViewBag.Header = "Добавление товарно-материальной ценности";
+            ViewBag.Button = "Добавить";
+            ViewBag.Action = "Create";
             return View();
         }
 
@@ -58,7 +61,10 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return View(await _tmcs.GetSingleAsync(tmc => tmc.Id == id, x => x.ResponsiblePerson, x => x.Room, x => x.Act));
+            ViewBag.Header = "Изменение товарно-материальной ценности";
+            ViewBag.Button = "Изменить";
+            ViewBag.Action = "Edit";
+            return View("Create", await _tmcs.GetSingleAsync(tmc => tmc.Id == id, x => x.ResponsiblePerson, x => x.Room, x => x.Act));
         }
 
         // POST: TmcController/Edit/5

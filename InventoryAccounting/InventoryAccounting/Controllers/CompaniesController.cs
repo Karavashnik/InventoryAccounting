@@ -13,9 +13,11 @@ namespace InventoryAccounting.Controllers
     public class CompaniesController : Controller
     {
         private ICompaniesRepository _companies;
+        //private readonly InventoryAccountingContext _context;
         public CompaniesController(InventoryAccountingContext context)
         {
             _companies = new CompaniesRepository(context);
+           // _context = context;
         }
 
         // GET: Companies
@@ -39,9 +41,6 @@ namespace InventoryAccounting.Controllers
         // GET: Companies/Create
         public IActionResult Create()
         {
-            ViewBag.Header = "Добавление компании";
-            ViewBag.Button = "Добавить";
-            ViewBag.Action = "Create";
             return PartialView("Create");
         }
 
@@ -51,6 +50,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
+        //[ValidateCompaniesAttribute]
         public async Task<IActionResult> Create([Bind("Id,Unp,Name,Address,DirectorsName,DirectorsPhone")] Companies company)
         {
             await _companies.AddAsync(company);
@@ -61,9 +61,6 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Companies>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            ViewBag.Header = "Изменение компании";
-            ViewBag.Button = "Изменить";
-            ViewBag.Action = "Edit";
             return PartialView("Create", await _companies.GetSingleAsync(x => x.Id == id));
         }
 

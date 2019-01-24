@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAccounting.Models.DB
 {
     [ModelMetadataType(typeof(ActsMetaData))]
-    public partial class Acts : IEntity
+    public partial class Acts : IEntity, IValidatableObject
     {
         public Acts()
         {
@@ -21,5 +23,17 @@ namespace InventoryAccounting.Models.DB
 
         public Contracts Contract { get; set; }
         public ICollection<Tmc> Tmc { get; set; }
+        
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            using (var context = new InventoryAccountingContext())
+            {
+                var existingAct = context.Acts.FirstOrDefaultAsync(x=>x.ActNumber == this.ActNumber);
+                if (existingAct != null)
+                {
+                    yield return new ValidationResult("Акт с таким номером уже существует.");
+                }
+            }
+        }
     }
 }

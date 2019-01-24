@@ -2,9 +2,10 @@
 
 @{
     Layout = null;
+    string action = ViewContext.RouteData.Values["Action"].ToString();
 }
 
-<form asp-action="@ViewBag.Action" id="form">
+<form asp-action="@action" id="form">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-row">
         <div class="form-group col-md-6">

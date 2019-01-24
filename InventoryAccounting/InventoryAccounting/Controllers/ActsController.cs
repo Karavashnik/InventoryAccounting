@@ -43,7 +43,6 @@ namespace InventoryAccounting.Controllers
         // GET: Acts/Create
         public IActionResult Create()
         {
-            ViewData["Action"] = "Create";
             return View();
         }
 

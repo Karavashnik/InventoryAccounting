@@ -2,8 +2,9 @@
 
 @{
     Layout = null;
+    string action = ViewContext.RouteData.Values["Action"].ToString();
 }
-<form asp-action="@ViewBag.Action">
+<form asp-action="@action">
     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">

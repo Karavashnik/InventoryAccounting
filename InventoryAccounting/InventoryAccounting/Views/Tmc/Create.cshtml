@@ -3,15 +3,16 @@
 @{
     ViewData["Title"] = "Добавить";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string action = ViewContext.RouteData.Values["Action"].ToString();
 }
 <div id="modal-placeholder"></div>
 <div class="row my-2">
     <div class="col-md-12">
-        <h2>@ViewBag.Header</h2>
+        <h2>@Html.Raw(action == "Create" ? "Добавление" : "Изменение") товарно-материальных ценностей</h2>
         <hr/>
         @await Html.PartialAsync("_Input", Model)
         <div class="form-group">
-            <input type="submit" form="form" value="@ViewBag.Button" class="btn btn-dark  mr-1"/>
+            <input type="submit" form="form" value="@Html.Raw(action == "Create" ? "Добавить" : "Изменить")" class="btn btn-dark  mr-1"/>
             <a asp-action="Index" class="btn btn-dark">Назад</a>
         </div>
     </div>

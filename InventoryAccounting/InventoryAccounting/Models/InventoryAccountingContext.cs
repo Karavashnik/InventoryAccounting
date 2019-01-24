@@ -2,6 +2,7 @@
 using InventoryAccounting.Models.DB;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace InventoryAccounting.Models
 {
@@ -10,7 +11,6 @@ namespace InventoryAccounting.Models
         public InventoryAccountingContext()
         {
         }
-
         public InventoryAccountingContext(DbContextOptions<InventoryAccountingContext> options)
             : base(options)
         {

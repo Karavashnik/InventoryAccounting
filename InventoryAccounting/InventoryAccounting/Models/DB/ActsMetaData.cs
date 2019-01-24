@@ -28,4 +28,5 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Договор")]
         public Contracts Contract { get; set; }
     }
+    
 }

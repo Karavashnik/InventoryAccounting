@@ -33,9 +33,6 @@ namespace InventoryAccounting.Controllers
         // GET: Rooms/Create
         public IActionResult Create()
         {
-            ViewBag.Header = "Добавление помещения";
-            ViewBag.Button = "Добавить";
-            ViewBag.Action = "Create";
             return PartialView("Create");
         }
 
@@ -56,9 +53,6 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Rooms>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            ViewBag.Header = "Изменение помещения";
-            ViewBag.Button = "Изменить";
-            ViewBag.Action = "Edit";
             return PartialView("Create", await _rooms.GetSingleAsync(x => x.Id == id));
         }
 

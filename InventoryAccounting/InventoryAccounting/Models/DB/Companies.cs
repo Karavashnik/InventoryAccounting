@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-
     [ModelMetadataType(typeof(CompaniesMetaData))]
+
     public partial class Companies : IEntity
     {
         public Companies()
@@ -13,7 +13,7 @@ namespace InventoryAccounting.Models.DB
             Contracts = new HashSet<Contracts>();
             Id = Guid.NewGuid();
         }
-
+        
         public Guid Id { get; set; }
         public int Unp { get; set; }
         public string Name { get; set; }
@@ -21,6 +21,6 @@ namespace InventoryAccounting.Models.DB
         public string DirectorsName { get; set; }
         public string DirectorsPhone { get; set; }
 
-        public ICollection<Contracts> Contracts { get; set; }
+        public virtual ICollection<Contracts> Contracts { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using InventoryAccounting.Models.DB;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace InventoryAccounting.Models
 {
@@ -11,6 +11,7 @@ namespace InventoryAccounting.Models
         public InventoryAccountingContext()
         {
         }
+
         public InventoryAccountingContext(DbContextOptions<InventoryAccountingContext> options)
             : base(options)
         {
@@ -23,12 +24,20 @@ namespace InventoryAccounting.Models
         public virtual DbSet<Persons> Persons { get; set; }
         public virtual DbSet<Rooms> Rooms { get; set; }
         public virtual DbSet<Tmc> Tmc { get; set; }
+        public virtual DbSet<TmcTypes> TmcTypes { get; set; }
+
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+
             modelBuilder.Entity<Acts>(entity =>
             {
+                entity.HasIndex(e => e.ActNumber)
+                    .HasName("UK_Acts")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CompilationDate).HasColumnType("date");
@@ -46,6 +55,10 @@ namespace InventoryAccounting.Models
 
             modelBuilder.Entity<Companies>(entity =>
             {
+                entity.HasIndex(e => e.Unp)
+                    .HasName("UK_Companies")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Address)
@@ -71,6 +84,10 @@ namespace InventoryAccounting.Models
 
             modelBuilder.Entity<Contracts>(entity =>
             {
+                entity.HasIndex(e => e.ContractNumber)
+                    .HasName("UK_Contracts")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CompilationDate).HasColumnType("date");
@@ -91,6 +108,10 @@ namespace InventoryAccounting.Models
 
             modelBuilder.Entity<Persons>(entity =>
             {
+                entity.HasIndex(e => e.PersonnelNumber)
+                    .HasName("UK_Persons")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
@@ -152,7 +173,9 @@ namespace InventoryAccounting.Models
             {
                 entity.ToTable("TMC");
 
-                entity.HasIndex(e => e.RoomId);
+                entity.HasIndex(e => e.InventoryNumber)
+                    .HasName("UK_TMC")
+                    .IsUnique();
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
@@ -166,11 +189,6 @@ namespace InventoryAccounting.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.PurchaseDate).HasColumnType("date");
-
-                entity.Property(e => e.Type)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.WarrantyDate).HasColumnType("date");
 
@@ -192,6 +210,21 @@ namespace InventoryAccounting.Models
                     .HasForeignKey(d => d.RoomId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TMC_Rooms");
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.Tmc)
+                    .HasForeignKey(d => d.TypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TMC_TmcTypes");
+            });
+
+            modelBuilder.Entity<TmcTypes>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
         }
     }

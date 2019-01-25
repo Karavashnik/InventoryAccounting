@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-
     [ModelMetadataType(typeof(ContractsMetaData))]
     public partial class Contracts : IEntity
     {
@@ -21,7 +20,7 @@ namespace InventoryAccounting.Models.DB
         public DateTime? ExpirationDate { get; set; }
         public DateTime CompilationDate { get; set; }
 
-        public Companies Company { get; set; }
-        public ICollection<Acts> Acts { get; set; }
+        public virtual Companies Company { get; set; }
+        public virtual ICollection<Acts> Acts { get; set; }
     }
 }

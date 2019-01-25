@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-    [ModelMetadataType(typeof(RoomsMetaData))]
+    [ModelMetadataType(typeof(TmcTypesMetaData))]
 
-    public partial class Rooms : IEntity
+    public partial class TmcTypes : IEntity
     {
-        public Rooms()
+        public TmcTypes()
         {
             Tmc = new HashSet<Tmc>();
             Id = Guid.NewGuid();
@@ -16,9 +16,6 @@ namespace InventoryAccounting.Models.DB
 
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Floor { get; set; }
-        public int Number { get; set; }
-        public string Phone { get; set; }
 
         public virtual ICollection<Tmc> Tmc { get; set; }
     }

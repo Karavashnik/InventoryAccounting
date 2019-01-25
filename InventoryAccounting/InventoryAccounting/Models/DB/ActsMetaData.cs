@@ -6,6 +6,7 @@ namespace InventoryAccounting.Models.DB
 {
     public class ActsMetaData
     {
+        [Key]
         [Display(Name = "Id акта")]
         public Guid Id { get; set; }
         

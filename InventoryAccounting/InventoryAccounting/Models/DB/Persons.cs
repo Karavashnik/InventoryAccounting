@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAccounting.Models.DB
 {
-
     [ModelMetadataType(typeof(PersonsMetaData))]
     public partial class Persons : IEntity
     {
-        public Persons()
+        public Persons() 
         {
             Tmc = new HashSet<Tmc>();
             Id = Guid.NewGuid();
@@ -27,6 +26,6 @@ namespace InventoryAccounting.Models.DB
         public string Email { get; set; }
         public string Post { get; set; }
 
-        public ICollection<Tmc> Tmc { get; set; }
+        public virtual ICollection<Tmc> Tmc { get; set; }
     }
 }

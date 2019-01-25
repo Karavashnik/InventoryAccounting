@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -107,6 +108,12 @@ namespace InventoryAccounting.Controllers
         public async Task<JsonResult> GetCompanies()
         {
             return Json(await _companies.GetAllAsync());
+        }
+        
+        public async Task<JsonResult> IsUnpUnique(int Unp)
+        {
+            var validateUnp = await _companies.GetSingleAsync(x => x.Unp == Unp);
+            return Json(validateUnp == null);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace InventoryAccounting.Models.DB
     {
         [Display(Name = "Id")]
         public Guid Id { get; set; }
+        [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 

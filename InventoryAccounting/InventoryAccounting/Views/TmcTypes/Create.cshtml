@@ -1,0 +1,33 @@
+﻿@model InventoryAccounting.Models.DB.TmcTypes
+
+@{
+    Layout = null;
+    string action = ViewContext.RouteData.Values["Action"].ToString();
+}
+<div id="modal-container" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Html.Raw(action == "Create" ? "Добавление" : "Изменение") типов ТМЦ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @await Html.PartialAsync("_Input", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button form="form" type="button" data-save="modal" class="btn btn-dark">@Html.Raw(action == "Create" ? "Добавить" : "Изменить")</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

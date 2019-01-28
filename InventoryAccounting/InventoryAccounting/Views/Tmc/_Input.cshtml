@@ -27,7 +27,15 @@
         </div>
         <div class="form-group col-md-6">
             <label asp-for="Type" class="col-form-label"></label>
-            <input asp-for="Type" class="form-control"/>
+            <div class="input-group">
+                <select id="TmcTypesSelect" asp-for="Type" class="form-control"></select>
+                <div class="input-group-append">
+                    <a href="#" class="btn btn-outline-secondary" onclick="UpdateTmcTypes()"><i class="fas fa-redo-alt"></i></a>
+                    <a href="#" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "TmcTypes", action = "Create"})"><i class="fas fa-plus"></i></a>
+                    <a href="#" id="edit-tmc-type" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal"><i class="fas fa-edit"></i></a>
+                    <a href="#" id="delete-tmc-type" class="btn btn-outline-secondary" data-target="#modal-container" data-toggle="modal"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
             <span asp-validation-for="Type" class="text-danger"></span>
         </div>
     </div>

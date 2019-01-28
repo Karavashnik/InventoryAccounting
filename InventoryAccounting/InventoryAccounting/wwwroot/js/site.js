@@ -2,7 +2,7 @@
     
     var placeholderElement = $('#modal-placeholder').modal('handleUpdate');
     $(document).on('click', 'a[data-toggle="modal"]',function (event) {
-        var url = $(this).data('url');     
+        var url = $(this).attr('data-url'); 
         $.get(url).done(function (data) {
             placeholderElement.html(data);
             placeholderElement.find('.modal').modal('show');
@@ -53,7 +53,32 @@
         $(placeholderElement).empty();
         $(".modal-backdrop").remove();        
     });
+    
+    $('#TmcTypesSelect').change(function () {
+        var select = $('#TmcTypesSelect');
+        var del = $('#delete-tmc-type');
+        var edit = $('#edit-tmc-type');
+        edit.attr("data-url", "/TmcTypes/Edit/" + select.val());
+        del.attr("data-url", "/TmcTypes/Delete/" + select.val());
+    });    
 });
+function UpdateTmcTypes() {
+    AjaxCall('/TmcTypes/GetTmcTypes', null).done(function (response) {
+        if (response.length > 0) {
+            var select = $('#TmcTypesSelect');
+            select.html('');
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+            select.append(options);
+            var del = $('#delete-tmc-type');
+            var edit = $('#edit-tmc-type');
+            edit.attr("data-url", "/TmcTypes/Edit/" + select.val());
+            del.attr("data-url", "/TmcTypes/Delete/" + select.val());
+        }
+    });    
+}
 function UpdateRooms() {
     AjaxCall('/Rooms/GetRooms', null).done(function (response) {
         if (response.length > 0) {

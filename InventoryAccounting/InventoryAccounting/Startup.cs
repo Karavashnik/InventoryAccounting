@@ -82,6 +82,7 @@ namespace InventoryAccounting
                 ));
             services.AddScoped<ValidateEntityExistsAttribute<Rooms>>();
             services.AddScoped<ValidateEntityExistsAttribute<Tmc>>();
+            services.AddScoped<ValidateEntityExistsAttribute<TmcTypes>>();
             services.AddScoped<ValidateEntityExistsAttribute<Persons>>();
             services.AddScoped<ValidateEntityExistsAttribute<Acts>>();
             services.AddScoped<ValidateEntityExistsAttribute<Contracts>>();

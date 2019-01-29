@@ -12,7 +12,7 @@
         <h2 class="d-inline">Контракты</h2>
         <a asp-action="Create" class="d-inline float-right text-dark fas fa-plus-circle fa-2x"></a>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" id="partialTable">
         @await Html.PartialAsync("_Table", Model)
     </div>
 </div>

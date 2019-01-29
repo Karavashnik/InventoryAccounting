@@ -1,5 +1,60 @@
 ﻿@model IEnumerable<InventoryAccounting.Models.DB.Persons>
+<div class="btn-group nav nav-pills nav-fill" data-toggle="buttons">
+    <label class="btn btn-outline-success active toggle-vis" data-column="0">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.PersonnelNumber)
+        <span class="fa fa-check "></span>
+    </label>
 
+    <label class="btn btn-outline-success active toggle-vis" data-column="1">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.LastName)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="2">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.FirstName)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="3">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.MiddleName)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="4">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.DateOfBirth)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="5">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.PassportDetails)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="6">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Education)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="7">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.DateOfEmployment)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="8">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Phone)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="9">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Email)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="10">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Post)
+        <span class="fa fa-check"></span>
+    </label>
+</div>
 <table class="table" id="main-table" data-url="@Url.Action("Index")">
     <thead>
         <tr>

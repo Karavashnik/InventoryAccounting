@@ -1,4 +1,30 @@
 ﻿@model IEnumerable<InventoryAccounting.Models.DB.Companies>
+<div class="btn-group nav nav-pills nav-fill" data-toggle="buttons">
+    <label class="btn btn-outline-success active toggle-vis" data-column="0">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Unp)
+        <span class="fa fa-check "></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="1">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Name)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="2">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.Address)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="3">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.DirectorsName)
+        <span class="fa fa-check"></span>
+    </label>
+
+    <label class="btn btn-outline-success active toggle-vis" data-column="4">
+        <input type="checkbox" hidden="true" autocomplete="off">@Html.DisplayNameFor(model => model.DirectorsPhone)
+        <span class="fa fa-check"></span>
+    </label>
+</div>
 <table class="table" id="main-table" data-url="@Url.Action("Index")">
     <thead>
         <tr>

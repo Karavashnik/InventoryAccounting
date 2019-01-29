@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;

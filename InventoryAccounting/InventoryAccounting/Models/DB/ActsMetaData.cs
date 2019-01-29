@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using InventoryAccounting.Filters;
 
 namespace InventoryAccounting.Models.DB
 {
@@ -10,6 +11,7 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Id акта")]
         public Guid Id { get; set; }
         
+        [ActUnique]
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Номер акта")]
         public int? ActNumber { get; set; }

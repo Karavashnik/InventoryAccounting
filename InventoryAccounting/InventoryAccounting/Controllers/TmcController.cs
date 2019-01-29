@@ -47,7 +47,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InventoryNumber,Name,Description,Type,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
+        public async Task<IActionResult> Create([Bind("Id,InventoryNumber,Name,Description,TypeId,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             await _tmcs.AddAsync(tmc);
             return RedirectToAction(nameof(Index));

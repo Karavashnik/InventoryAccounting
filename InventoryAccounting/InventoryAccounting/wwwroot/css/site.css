@@ -4,3 +4,13 @@
 a:hover {
     text-decoration: none;
 }
+#main-table{
+    width: 100%;
+    max-width: 100%;
+}
+.btn span.fa-check {
+    opacity: 0;
+}
+.btn.active span.fa-check {
+    opacity: 1;
+}

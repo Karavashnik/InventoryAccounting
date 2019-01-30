@@ -23,6 +23,7 @@ namespace InventoryAccounting.Models.DB
         [MaxLength(50)]
         [Display(Name="Тип договора")]
         public string Type { get; set; }
+        
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Дата составления")]
         [DisplayFormat(DataFormatString = "{0:d}")]

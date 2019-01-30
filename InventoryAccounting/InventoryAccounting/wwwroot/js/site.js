@@ -1,4 +1,5 @@
 ﻿$(function () {
+    $(":input").inputmask();
     function SetDataTable(table)
     {
         table = $('#main-table').DataTable(
@@ -31,19 +32,20 @@
             }
         );
         table.columns.adjust().draw();
+        $('label.toggle-vis').on( 'click', function (e) {
+            e.preventDefault();
+            // Get the column API object
+            var column = table.column( $(this).attr('data-column') );
+            if(!$(this).hasClass('active') ) {
+                column.visible(true);
+            }else {
+                column.visible(false);
+            }
+        } );
         return table
     }
     var table = SetDataTable(table);
-    $('label.toggle-vis').on( 'click', function (e) {
-        e.preventDefault();
-        // Get the column API object
-        var column = table.column( $(this).attr('data-column') );
-        if(!$(this).hasClass('active') ) {
-            column.visible(true);
-        }else {
-            column.visible(false);
-        }
-    } );
+    
     var placeholderElement = $('#modal-placeholder').modal('handleUpdate');
     $(document).on('click', 'a[data-toggle="modal"]',function (event) {
         var url = $(this).attr('data-url'); 
@@ -109,6 +111,7 @@
         edit.attr("data-url", "/TmcTypes/Edit/" + select.val());
         del.attr("data-url", "/TmcTypes/Delete/" + select.val());
     });    
+    
 });
 function UpdateTmcTypes() {
     AjaxCall('/TmcTypes/GetTmcTypes', null).done(function (response) {

@@ -9,22 +9,22 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Name" class="col-form-label"></label>
-        <input asp-for="Name" maxlength="30" class="form-control"/>
+        <input asp-for="Name" maxlength="30" title="Максимальная длина - 30 символов" class="form-control"/>
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Floor" class="col-form-label"></label>
-        <input asp-for="Floor" maxlength="2" class="form-control"/>
+        <input asp-for="Floor" min="6" max="13" title="Номер должен быть в диапазоне от 6 до 13" class="form-control"/>
         <span asp-validation-for="Floor" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Number" class="col-form-label"></label>
-        <input asp-for="Number" maxlength="2" class="form-control"/>
+        <input asp-for="Number" min="1" max="15" title="Номер должен быть в диапазоне от 1 до 15" class="form-control"/>
         <span asp-validation-for="Number" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Phone" class="col-form-label"></label>
-        <input asp-for="Phone" maxlength="5" class="form-control"/>
+        <input asp-for="Phone" type="text" data-inputmask="'mask': '99-9999999'"  title="Телефон должен быть в формате XX-XX" maxlength="5" class="form-control"/>
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 </form>

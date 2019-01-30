@@ -16,8 +16,8 @@ namespace InventoryAccounting.Models.DB
 
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Floor { get; set; }
-        public int Number { get; set; }
+        public int? Floor { get; set; }
+        public int? Number { get; set; }
         public string Phone { get; set; }
 
         public virtual ICollection<Tmc> Tmc { get; set; }

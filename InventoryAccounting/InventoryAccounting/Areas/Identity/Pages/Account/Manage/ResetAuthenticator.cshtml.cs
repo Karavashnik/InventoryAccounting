@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using InventoryAccounting.Models;
+using InventoryAccounting.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace InventoryAccounting.Areas.Identity.Pages.Account.Manage
@@ -15,15 +15,21 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account.Manage
         UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         ILogger<ResetAuthenticatorModel> _logger;
+        private readonly IStringLocalizer _identityLocalizer;
 
         public ResetAuthenticatorModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<ResetAuthenticatorModel> logger)
+            ILogger<ResetAuthenticatorModel> logger,
+            IStringLocalizerFactory factory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+
+            var type = typeof(IdentityResource);
+            var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+            _identityLocalizer = factory.Create("IdentityResource", assemblyName.Name);
         }
 
         [TempData]
@@ -34,7 +40,7 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(_identityLocalizer["USER_NOTFOUND", _userManager.GetUserId(User)]);
             }
 
             return Page();
@@ -45,7 +51,7 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound(_identityLocalizer["USER_NOTFOUND", _userManager.GetUserId(User)]);
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
@@ -53,7 +59,7 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
+            StatusMessage = _identityLocalizer["RESET_AUTHENTICATOR_STATUS"];
 
             return RedirectToPage("./EnableAuthenticator");
         }

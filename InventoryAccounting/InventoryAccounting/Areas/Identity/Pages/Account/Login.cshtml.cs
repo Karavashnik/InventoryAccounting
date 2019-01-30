@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using InventoryAccounting.Models;
+using Microsoft.AspNetCore.Authorization;
+using InventoryAccounting.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace InventoryAccounting.Areas.Identity.Pages.Account
@@ -18,58 +20,63 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        private readonly IStringLocalizer _identityLocalizer;
+ 
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, IStringLocalizerFactory factory)
         {
             _signInManager = signInManager;
             _logger = logger;
-        }
-
+ 
+             var type = typeof(IdentityResource);
+             var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+            _identityLocalizer = factory.Create("IdentityResource", assemblyName.Name);
+ 
+            }
+ 
         [BindProperty]
         public InputModel Input { get; set; }
-
+ 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
+ 
         public string ReturnUrl { get; set; }
-
+ 
         [TempData]
         public string ErrorMessage { get; set; }
-
+ 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "EMAIL_REQUIRED")]
+            [EmailAddress(ErrorMessage = "EMAIL_INVALID")]
             public string Email { get; set; }
-
-            [Required]
+ 
+            [Required(ErrorMessage = "PASSWORD_REQUIRED")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
+ 
             public bool RememberMe { get; set; }
         }
-
+ 
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
-
+ 
             returnUrl = returnUrl ?? Url.Content("~/");
-
+ 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
+ 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+ 
             ReturnUrl = returnUrl;
         }
-
+ 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-
+ 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -91,11 +98,11 @@ namespace InventoryAccounting.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, _identityLocalizer["INVALID_LOGIN_ATTEMPT"]);
                     return Page();
                 }
             }
-
+ 
             // If we got this far, something failed, redisplay form
             return Page();
         }

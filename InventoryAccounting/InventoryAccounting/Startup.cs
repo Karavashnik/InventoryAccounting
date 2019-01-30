@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 using System.Threading.Tasks;
 using InventoryAccounting.Filters;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
+using InventoryAccounting.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace InventoryAccounting
 {
@@ -59,7 +65,7 @@ namespace InventoryAccounting
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
-            });
+            });         
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -87,15 +93,49 @@ namespace InventoryAccounting
             services.AddScoped<ValidateEntityExistsAttribute<Acts>>();
             services.AddScoped<ValidateEntityExistsAttribute<Contracts>>();
             services.AddScoped<ValidateEntityExistsAttribute<Companies>>();
+            
+            /**** Localization configuration ****/
+            services.AddSingleton<IdentityLocalizationService>();
+            services.AddSingleton<SharedLocalizationService>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+ 
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                {
+                    var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("ru-RU"),
+                        new CultureInfo("de-CH")
+                    };
+ 
+                    options.DefaultRequestCulture = new RequestCulture(culture: "ru-RU", uiCulture: "ru-RU");
+                    //options.SetDefaultCulture("de-CH");
+                    options.SupportedCultures = supportedCultures;
+                    options.SupportedUICultures = supportedCultures;
+                    options.RequestCultureProviders = new List<IRequestCultureProvider>
+                    {
+                        new QueryStringRequestCultureProvider(),
+                        new CookieRequestCultureProvider()
+                    };
+                });
+            
             services.AddMvc( options =>
                     options.Filters.Add(typeof(ValidateModelAttribute))
-                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddViewLocalization()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        var assemblyName = new AssemblyName(typeof(IdentityResource).GetTypeInfo().Assembly.FullName);
+                        return factory.Create("IdentityResource", assemblyName.Name);
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -105,6 +145,9 @@ namespace InventoryAccounting
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();

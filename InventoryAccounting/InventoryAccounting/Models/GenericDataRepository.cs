@@ -19,16 +19,12 @@ namespace InventoryAccounting.Models
         public virtual async Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list;
-            
             IQueryable<T> dbQuery = context.Set<T>();
-
-            //Apply eager loading
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
                 dbQuery = dbQuery.Include(navigationProperty);
             list = await dbQuery
                 .AsNoTracking()
                 .ToListAsync();
-            
             return list;
         }
 
@@ -77,7 +73,6 @@ namespace InventoryAccounting.Models
                 context.Entry(item).State = EntityState.Added;
             }
             await context.SaveChangesAsync();
-            
         }
         public virtual async Task UpdateAsync(params T[] items)
         {

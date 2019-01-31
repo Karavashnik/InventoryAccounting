@@ -178,9 +178,9 @@ namespace InventoryAccounting
             }
             //Assign Admin role to the main User here we have given our newly registered 
             //login id for Admin management
-            User user = await UserManager.FindByEmailAsync("antondedenko@gmail.com");
-            var User = new User();
-            await UserManager.AddToRoleAsync(user, "Admin");
+            //User user = await UserManager.FindByEmailAsync("antondedenko@gmail.com");
+            //var User = new User();
+            //await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

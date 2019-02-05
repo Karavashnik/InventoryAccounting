@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using InventoryAccounting.Models;
 using InventoryAccounting.Models.DB;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +16,12 @@ namespace InventoryAccounting.Controllers
     {
         private ITmcRepository _tmcs;
 
+        private IHostingEnvironment _environment;
         //private readonly InventoryAccountingContext _context;
-        public TmcController(InventoryAccountingContext context)
+        public TmcController(InventoryAccountingContext context, IHostingEnvironment environment)
         {
             _tmcs = new TmcRepository(context);
+            _environment = environment;
         }
 
         // GET: TmcController
@@ -99,6 +102,19 @@ namespace InventoryAccounting.Controllers
         {
             await _tmcs.RemoveAsync(await _tmcs.GetSingleAsync(x => x.Id == id));
             return PartialView("Delete");
+        }
+        [HttpGet]
+        public FileResult PrintSingle(Guid id)
+        {
+            var tmc = _tmcs.GetSingleAsync(x => x.Id == id).Result; 
+            CreateWordDocuments word = new CreateWordDocuments();
+            var excelBytes = word.CreateDocumentFromTmcLayout(_environment, tmc);
+            FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
+            {
+                FileDownloadName = string.Format("Export_{0}_{1}.docx", DateTime.Now.ToString("yyMMdd"), tmc.Name)
+            };
+
+            return fr;
         }
     }
 }

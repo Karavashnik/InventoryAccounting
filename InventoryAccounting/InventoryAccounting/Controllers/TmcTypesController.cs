@@ -79,7 +79,16 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _types.RemoveAsync(await _types.GetSingleAsync(x => x.Id == id));
+            var types = await _types.GetSingleAsync(x=> x.Id == id);
+            try
+            {
+                await _types.RemoveAsync(types);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("Id", "Данную запись невозможно удалить, потому что она связана с другими записями.");
+                return PartialView("Delete", types);
+            }
             return PartialView("Delete");
         }
         [HttpPost]

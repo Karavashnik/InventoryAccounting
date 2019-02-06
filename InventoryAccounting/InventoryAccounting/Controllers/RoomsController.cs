@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -98,7 +99,17 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _rooms.RemoveAsync(await _rooms.GetSingleAsync(x => x.Id == id));
+            var room = await _rooms.GetSingleAsync(x => x.Id == id);
+            try
+            {
+                await _rooms.RemoveAsync(room);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("Id", "Данную запись невозможно удалить, потому что она связана с другими записями.");
+                return PartialView("Delete", room);
+            }
+
             return PartialView("Delete");
         }
         [HttpPost]

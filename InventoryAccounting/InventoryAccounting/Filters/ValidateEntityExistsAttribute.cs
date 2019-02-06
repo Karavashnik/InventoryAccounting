@@ -28,7 +28,7 @@ namespace InventoryAccounting.Filters
             }
             else
             {
-                context.Result = new BadRequestObjectResult("Bad id parameter");
+                context.Result = new BadRequestObjectResult("Неправильный ID");
                 return;
             }
 

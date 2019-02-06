@@ -14,11 +14,9 @@ namespace InventoryAccounting.Controllers
     public class CompaniesController : Controller
     {
         private ICompaniesRepository _companies;
-        //private readonly InventoryAccountingContext _context;
         public CompaniesController(InventoryAccountingContext context)
         {
             _companies = new CompaniesRepository(context);
-           // _context = context;
         }
 
         // GET: Companies
@@ -100,7 +98,16 @@ namespace InventoryAccounting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _companies.RemoveAsync(await _companies.GetSingleAsync(x => x.Id == id));
+            var company = await _companies.GetSingleAsync(x=> x.Id == id);
+            try
+            {
+                await _companies.RemoveAsync(company);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("Id", "Данную запись невозможно удалить, потому что она связана с другими записями.");
+                return PartialView("Delete", company);
+            }
             return PartialView("Delete");
         }
         [HttpPost]

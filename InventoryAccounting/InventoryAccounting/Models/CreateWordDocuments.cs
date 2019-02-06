@@ -7,15 +7,34 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using InventoryAccounting.Models.DB;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
 
 namespace InventoryAccounting.Models
 {
-    public class CreateWordDocuments
+    public static class CreateWordDocuments
     {
-        public byte[]  CreateDocumentFromTmcLayout(IHostingEnvironment environment, Tmc tmc)
+        public static byte[]  CreateDocumentFromTmcLayout(IHostingEnvironment environment, Tmc tmc)
         {
             var template = new FileInfo(Path.Combine(environment.WebRootPath, "docs/tmc.dotx"));
+            List<Tuple<string, string>> strings = new List<Tuple<string, string>>();
+            strings.Add(new Tuple<string, string>("InventoryNumber", tmc.InventoryNumber.ToString()));
+            strings.Add(new Tuple<string, string>("Name", tmc.Name));
+            strings.Add(new Tuple<string, string>("Description", tmc.Description));
+            strings.Add(new Tuple<string, string>("PurchaseDate", tmc.PurchaseDate.ToString()));
+            strings.Add(new Tuple<string, string>("FactoryNumber", tmc.FactoryNumber.ToString()));
+            strings.Add(new Tuple<string, string>("WriteOffDate", tmc.WriteOffDate.ToString()));
+            strings.Add(new Tuple<string, string>("WarrantyDate", tmc.WarrantyDate.ToString()));
+            strings.Add(new Tuple<string, string>("LastName", tmc.ResponsiblePerson.LastName));
+            strings.Add(new Tuple<string, string>("FirstName", tmc.ResponsiblePerson.FirstName));
+            strings.Add(new Tuple<string, string>("PersonnelNumber", tmc.ResponsiblePerson.PersonnelNumber.ToString()));
+            strings.Add(new Tuple<string, string>("ActNumber", tmc.Act.ActNumber.ToString()));
+            strings.Add(new Tuple<string, string>("Type", tmc.Type.Name));
+            strings.Add(new Tuple<string, string>("RoomName", tmc.Room.Name));
+            strings.Add(new Tuple<string, string>("ContractNumber", tmc.Act.Contract.ContractNumber.ToString()));
+            return CreateWordDocument(template, strings);
+        }
+        private static byte[] CreateWordDocument(FileInfo file, List<Tuple<string, string>> strings)
+        {
+            FileInfo template = file;
             //var template = @"~/docs/tmc.dotx";
             byte[] templateBytes = File.ReadAllBytes(template.FullName);
 
@@ -33,48 +52,39 @@ namespace InventoryAccounting.Models
                     // Get the Document Settings Part
                     DocumentSettingsPart documentSettingPart1 = mainPart.DocumentSettingsPart;
 
+                    foreach (var str in strings)
+                    {
+                        try
+                        {
+                            ReplaceBookmarkParagraphs(document, str.Item1, str.Item2);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // ignore
+                        }
+                    }
                     // Create a new attachedTemplate and specify a relationship ID
-                    AttachedTemplate attachedTemplate1 = new AttachedTemplate() { Id = "relationId1" };
+                    //AttachedTemplate attachedTemplate1 = new AttachedTemplate() { Id = "relationId1" };
 
                     // Append the attached template to the DocumentSettingsPart
-                    documentSettingPart1.Settings.Append(attachedTemplate1);
+                    //documentSettingPart1.Settings.Append(attachedTemplate1);
 
                     // Add an ExternalRelationShip of type AttachedTemplate.
                     // Specify the path of template and the relationship ID
-                    documentSettingPart1.AddExternalRelationship("http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate", new Uri(template.FullName, UriKind.Absolute), "relationId1");
+                    //documentSettingPart1.AddExternalRelationship("http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate", new Uri(template.FullName, UriKind.Absolute), "relationId1");
 
                     // Save the document
                     mainPart.Document.Save();
                 }
+
                 templateStream.Position = 0;
                 var result = templateStream.ToArray();
                 templateStream.Flush();
 
                 return result;
             }
-            /*
-            var filePath = @"~/docs/tmc.dotx";
-            var file = WordprocessingDocument.CreateFromTemplate(filePath);
-            
-            IDictionary<String, BookmarkStart> bookmarkMap = 
-                new Dictionary<String, BookmarkStart>();
-
-            foreach (BookmarkStart bookmarkStart in file.MainDocumentPart.RootElement.Descendants<BookmarkStart>())
-            {
-                bookmarkMap[bookmarkStart.Name] = bookmarkStart;
-            }
-
-            foreach (BookmarkStart bookmarkStart in bookmarkMap.Values)
-            {
-                Run bookmarkText = bookmarkStart.NextSibling<Run>();
-                if (bookmarkText != null)
-                {
-                    bookmarkText.GetFirstChild<Text>().Text = "blah";
-                }
-            }
-            */
         }
-        public static void ReplaceBookmarkParagraphs(WordprocessingDocument doc, string bookmark, string text)
+        private static void ReplaceBookmarkParagraphs(WordprocessingDocument doc, string bookmark, string text)
         {
             //Find all Paragraph with 'BookmarkStart' 
             var t = (from el in doc.MainDocumentPart.RootElement.Descendants<BookmarkStart>()
@@ -91,7 +101,7 @@ namespace InventoryAccounting.Models
             //Delete all bookmarkEnd node, until the same ID
             deleteElement(next.GetFirstChild<Text>().Parent, next.GetFirstChild<Text>().NextSibling(), val, true);
         }
-        public static bool deleteElement(OpenXmlElement parentElement, OpenXmlElement elem, string id, bool seekParent)
+        private static bool deleteElement(OpenXmlElement parentElement, OpenXmlElement elem, string id, bool seekParent)
         {
             bool found = false;
 
@@ -132,6 +142,5 @@ namespace InventoryAccounting.Models
 
             return found;
         }
-        
     }
 }

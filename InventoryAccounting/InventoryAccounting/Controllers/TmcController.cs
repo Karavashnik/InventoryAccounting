@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using InventoryAccounting.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace InventoryAccounting.Controllers
         // GET: TmcController
         public async Task<IActionResult> Index()
         {
-            return View( await _tmcs.GetAllAsync(x=> x.ResponsiblePerson, x=>x.Room, x=>x.Act));
+            return View( await _tmcs.GetAllAsync(x=> x.ResponsiblePerson, x=>x.Room, x=>x.Act, x=>x.Type));
         }
 
         // GET: TmcController/Details/5
@@ -35,7 +36,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Details(Guid id)
         {
-            return PartialView(await _tmcs.GetSingleAsync(tmc=> tmc.Id == id, x=>x.ResponsiblePerson, x=>x.Room, x=>x.Act));
+            return PartialView(await _tmcs.GetSingleAsync(tmc=> tmc.Id == id, x=>x.ResponsiblePerson, x=>x.Room, x=>x.Act, x=>x.Type));
         }
 
         // GET: TmcController/Create
@@ -61,7 +62,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return View("Create", await _tmcs.GetSingleAsync(tmc => tmc.Id == id, x => x.ResponsiblePerson, x => x.Room, x => x.Act));
+            return View("Create", await _tmcs.GetSingleAsync(tmc => tmc.Id == id, x => x.ResponsiblePerson, x => x.Room, x => x.Act, x=>x.Type));
         }
 
         // POST: TmcController/Edit/5
@@ -92,7 +93,7 @@ namespace InventoryAccounting.Controllers
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Tmc>))]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return PartialView(await _tmcs.GetSingleAsync(x=>x.Id == id));
+            return PartialView(await _tmcs.GetSingleAsync(x=>x.Id == id,x => x.ResponsiblePerson, x => x.Room, x => x.Act, x=>x.Type));
         }
 
         // POST: TmcController/Delete/5
@@ -104,17 +105,28 @@ namespace InventoryAccounting.Controllers
             return PartialView("Delete");
         }
         [HttpGet]
-        public FileResult PrintSingle(Guid id)
+        public ActionResult PrintSingle(Guid id)
         {
-            var tmc = _tmcs.GetSingleAsync(x => x.Id == id).Result; 
-            CreateWordDocuments word = new CreateWordDocuments();
-            var excelBytes = word.CreateDocumentFromTmcLayout(_environment, tmc);
-            FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
+            var tmc = _tmcs.GetSingleAsync(x => x.Id == id, x=>x.Act, x=> x.ResponsiblePerson, x=>x.Room, x=>x.Act.Contract, x=>x.Type ).Result; 
+            //CreateWordDocuments word = new CreateWordDocuments();
+            try
             {
-                FileDownloadName = string.Format("Export_{0}_{1}.docx", DateTime.Now.ToString("yyMMdd"), tmc.Name)
-            };
+                var excelBytes = CreateWordDocuments.CreateDocumentFromTmcLayout(_environment, tmc);
+                FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
+                {
+                    FileDownloadName = string.Format("TMC_{0}_{1}.docx", DateTime.Now.ToString("yyMMdd"), tmc.Name)
+                };
 
-            return fr;
+                return fr;
+            }
+            catch (IOException)
+            {
+                return Content("Файл шаблона недоступен.");
+            }
+            catch (InvalidOperationException)
+            {
+                return Content("Ошибка при создании файла.");
+            }
         }
     }
 }

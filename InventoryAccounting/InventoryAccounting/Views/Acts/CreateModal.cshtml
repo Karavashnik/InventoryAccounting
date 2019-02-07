@@ -7,7 +7,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">@Html.Raw(action == "Create" ? "Добавление" : "Изменение") акта</h5>
+                <h5 class="modal-title">@Html.Raw(action == "CreateModal" ? "Добавление" : "Изменение") акта</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button form="form" type="button" data-save="modal" class="btn btn-dark">@Html.Raw(action == "Create" ? "Добавить" : "Изменить")</button>
+                <button form="form" type="button" data-save="modal" class="btn btn-dark">@Html.Raw(action == "CreateModal" ? "Добавить" : "Изменить")</button>
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@ namespace InventoryAccounting.Models.DB
         public Guid Id { get; set; }
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]
-        //[Range(000000000, 999999999, ErrorMessage = "УНП должен состоять из 9 цифр")]
+        [Range(100000000, 999999999, ErrorMessage = "УНП должен состоять из 9 цифр")]
         [UnpUnique]
         [Display(Name = "УНП")]
         public int Unp { get; set; }
@@ -32,7 +32,7 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Имя директора")]
         public string DirectorsName { get; set; }
         
-        [MaxLength(15)]
+        [MaxLength(20)]
         [Display(Name = "Телефон директора")]
         public string DirectorsPhone { get; set; }
     }

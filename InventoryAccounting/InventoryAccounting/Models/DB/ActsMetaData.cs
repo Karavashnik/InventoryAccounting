@@ -15,13 +15,15 @@ namespace InventoryAccounting.Models.DB
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Номер акта")]
         public int? ActNumber { get; set; }
+        
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [ForeignKey("Contracts")]
         [Display(Name = "Договор")]
         public Guid? ContractId { get; set; }
+        
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [MaxLength(50)]
-        [Display(Name="Тип договора")]
+        [Display(Name="Тип акта")]
         public string Type { get; set; }
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]

@@ -9,7 +9,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Unp" class="col-form-label"></label>
-        <input asp-for="Unp" maxlength="9" class="form-control"/>
+        <input asp-for="Unp" data-inputmask="'mask': '999999999'" type="text" class="form-control"/>
         <span asp-validation-for="Unp" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -29,7 +29,7 @@
     </div>
     <div class="form-group">
         <label asp-for="DirectorsPhone" class="col-form-label"></label>
-        <input asp-for="DirectorsPhone" class="form-control"/>
+        <input asp-for="DirectorsPhone" data-inputmask="'mask': '+375(99)999-99-99'" class="form-control"/>
         <span asp-validation-for="DirectorsPhone" class="text-danger"></span>
     </div>
 </form>

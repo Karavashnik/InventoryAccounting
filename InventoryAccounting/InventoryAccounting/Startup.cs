@@ -40,12 +40,12 @@ namespace InventoryAccounting
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-           
+
             services.AddDbContext<InventoryAccountingContext>(options =>
                 options.UseSqlServer(connection));
             services.AddIdentity<User, IdentityRole>()
-                 .AddEntityFrameworkStores<InventoryAccountingContext>()
-                 .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<InventoryAccountingContext>()
+                .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -65,7 +65,7 @@ namespace InventoryAccounting
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
-            });         
+            });
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -93,12 +93,12 @@ namespace InventoryAccounting
             services.AddScoped<ValidateEntityExistsAttribute<Acts>>();
             services.AddScoped<ValidateEntityExistsAttribute<Contracts>>();
             services.AddScoped<ValidateEntityExistsAttribute<Companies>>();
-            
+
             /**** Localization configuration ****/
             services.AddSingleton<IdentityLocalizationService>();
             services.AddSingleton<SharedLocalizationService>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
- 
+
             services.Configure<RequestLocalizationOptions>(
                 options =>
                 {
@@ -108,7 +108,7 @@ namespace InventoryAccounting
                         new CultureInfo("ru-RU"),
                         new CultureInfo("de-CH")
                     };
- 
+
                     options.DefaultRequestCulture = new RequestCulture(culture: "ru-RU", uiCulture: "ru-RU");
                     //options.SetDefaultCulture("de-CH");
                     options.SupportedCultures = supportedCultures;
@@ -119,10 +119,22 @@ namespace InventoryAccounting
                         new CookieRequestCultureProvider()
                     };
                 });
-            
-            services.AddMvc( options =>
-                    options.Filters.Add(typeof(ValidateModelAttribute))
-                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddViewLocalization()
+
+            services.AddMvc(options => { 
+                options.Filters.Add(typeof(ValidateModelAttribute));
+                options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(val => $"Значение '{val}' недопустимо.");
+                options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(val => $"Значение для свойства '{val}' не было предоставлено.");
+                options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "Значение обязательное.");
+                options.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "Требуется непустое тело запроса.");
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(val => $"Значение '{val}' недопустимо.");
+                options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((v,p) => $"Значение '{v}' недопустимо для {p}.");
+                options.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(val => $"Значение '{val}' недопустимо.");
+                options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(val => $"Предоставленное значение недопустимо для {val}.");
+                options.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "Предоставленное значение недействительно.");
+                options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(val => $"Поле {val} должно быть числом.");
+                options.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "Поле должно быть числом.");
+            }
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddViewLocalization()
                 .AddDataAnnotationsLocalization(options =>
                 {
                     options.DataAnnotationLocalizerProvider = (type, factory) =>

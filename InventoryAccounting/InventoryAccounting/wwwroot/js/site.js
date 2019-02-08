@@ -56,14 +56,16 @@
     });
     placeholderElement.on('click', '[data-save="modal"]', function (event) {
         event.preventDefault();
+        var button = this;
         var form = $(this).parents('.modal').find('form');
         var actionUrl = form.attr('action');
         var dataToSend = form.serialize();
-
         $.post(actionUrl, dataToSend).done(function (data) {
-            var newBody = $('.modal-body', data);
-            placeholderElement.find('.modal-body').replaceWith(newBody);
             
+            var newBody = $('.modal-body', data);
+            if (! button.hasAttribute('data-delete')) {
+                placeholderElement.find('.modal-body').replaceWith(newBody);
+            }            
             // find IsValid input field and check it's value
             // if it's valid then hide modal window
             var isValid = newBody.find('[name="IsValid"]').val() == 'True';

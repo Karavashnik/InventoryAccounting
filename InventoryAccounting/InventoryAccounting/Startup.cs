@@ -134,7 +134,7 @@ namespace InventoryAccounting
                 options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(val => $"Поле {val} должно быть числом.");
                 options.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "Поле должно быть числом.");
             }
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddViewLocalization()
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddViewLocalization()
                 .AddDataAnnotationsLocalization(options =>
                 {
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
@@ -151,6 +151,7 @@ namespace InventoryAccounting
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {

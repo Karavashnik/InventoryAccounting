@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventoryAccounting.Models.DB
 {
@@ -12,7 +9,7 @@ namespace InventoryAccounting.Models.DB
         public Guid Id { get; set; }
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]
-        [MaxLength(10)]
+        [MaxLength(15)]
         [Display(Name = "Название")]
         public string Name { get; set; }
         

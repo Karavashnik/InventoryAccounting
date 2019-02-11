@@ -68,5 +68,9 @@ namespace InventoryAccounting.Models.DB
         [ForeignKey("RoomId")]
         [Display(Name = "Помещение")]
         public Rooms Room { get; set; }
+        
+        [ForeignKey("TypeId")]
+        [Display(Name = "Тип")]
+        public virtual TmcTypes Type { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Id акта")]
         public Guid Id { get; set; }
         
-        [ActUnique]
+        //[ActUnique]
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Номер акта")]
         public int? ActNumber { get; set; }

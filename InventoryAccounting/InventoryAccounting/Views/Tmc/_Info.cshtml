@@ -8,60 +8,53 @@
         <span asp-validation-for="Id" class="text-danger col-md-12"></span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.InventoryNumber)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.InventoryNumber)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.InventoryNumber)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.InventoryNumber)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.FactoryNumber)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.FactoryNumber)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.FactoryNumber)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.FactoryNumber)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.Name)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.Name)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Name)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Name)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.Type)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.Type)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Type)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Type.Name)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.Description)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.Description)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Description)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Description)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.PurchaseDate)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.PurchaseDate)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.PurchaseDate)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.PurchaseDate)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.WriteOffDate)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.WriteOffDate)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.WriteOffDate)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.WriteOffDate)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.WarrantyDate)</span>
-        <span class="col-md-10">@Html.DisplayFor(model => model.WarrantyDate)</span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.WarrantyDate)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.WarrantyDate)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.ResponsiblePerson)</span>
-        <span class="col-md-10">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.ResponsiblePerson)</span>
+        <span class="col-md-8">
             @Html.DisplayFor(model => model.ResponsiblePerson.FirstName)
             @Html.DisplayFor(model => model.ResponsiblePerson.LastName)
             @Html.DisplayFor(model => model.ResponsiblePerson.MiddleName)
-            <a asp-controller="Persons" asp-action="Details" asp-route-id="@Model.ResponsiblePerson.PersonnelNumber" class="fas fa-info-circle text-dark"></a>
         </span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.Room)</span>
-        <span class="col-md-10">
-            @Html.DisplayFor(model => model.Room.Name)
-            (@Html.DisplayFor(model => model.Room.Floor)-@Html.DisplayFor(model => model.Room.Number))
-            @Html.DisplayFor(model => model.Room.Phone)
-            <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId" class="fas fa-info-circle text-dark"></a>
-        </span>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Room)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Room.Floor)-@Html.DisplayFor(model => model.Room.Number)</span>
     </div>
     <div class="row my-1">
-        <span class="col-md-2 font-weight-bold">@Html.DisplayNameFor(model => model.Act)</span>
-        <span class="col-md-10">
-            @Html.DisplayFor(model => model.Act.Id)
-            <a asp-controller="Acts" asp-action="Details" asp-route-id="@Model.Act.ActNumber" class="fas fa-info-circle text-dark"></a>
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Act.ActNumber)</span>
+        <span class="col-md-8">
+            @Html.DisplayFor(model => model.Act.ActNumber)
         </span>
     </div>
 </div>

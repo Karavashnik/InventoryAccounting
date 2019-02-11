@@ -9,7 +9,7 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Id")]
         public Guid Id { get; set; }
         
-        [PersonUnique]
+        //[PersonUnique]
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Табельный номер")]
         public int PersonnelNumber { get; set; }

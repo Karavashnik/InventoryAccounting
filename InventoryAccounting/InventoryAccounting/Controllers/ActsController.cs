@@ -59,6 +59,8 @@ namespace InventoryAccounting.Controllers
         }
 
         // GET: Acts/Edit/5
+        [Route("Acts/Edit/{id:guid}")]
+        [HttpGet]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Acts>))]
         public async Task<IActionResult> Edit(Guid? id)
         {

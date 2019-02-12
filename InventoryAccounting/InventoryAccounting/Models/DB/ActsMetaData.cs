@@ -11,10 +11,10 @@ namespace InventoryAccounting.Models.DB
         [Display(Name = "Id акта")]
         public Guid Id { get; set; }
         
-        //[ActUnique]
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Display(Name = "Номер акта")]
-        public int? ActNumber { get; set; }
+        [ActUnique]
+        public int ActNumber { get; set; }
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [ForeignKey("Contracts")]

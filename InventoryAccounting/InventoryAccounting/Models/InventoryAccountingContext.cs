@@ -16,6 +16,7 @@ namespace InventoryAccounting.Models
             : base(options)
         {
             Database.EnsureCreated();
+            
         }
 
         public virtual DbSet<Acts> Acts { get; set; }
@@ -26,7 +27,10 @@ namespace InventoryAccounting.Models
         public virtual DbSet<Tmc> Tmc { get; set; }
         public virtual DbSet<TmcTypes> TmcTypes { get; set; }
 
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -15,9 +15,12 @@ namespace InventoryAccounting.Filters
             
             var context = (InventoryAccountingContext)validationContext
                 .GetService(typeof(InventoryAccountingContext));
-            var act = context?.Acts.FirstOrDefault(x => x.ActNumber == (int) value);
-            
-            return act == null ? ValidationResult.Success : new ValidationResult("Акт с таким номером уже существует.");
+            if (context?.Acts.Any(x => x.ActNumber == (int) value && x.Id == acts.Id) == true)
+            {
+                return ValidationResult.Success;
+            }
+            var act = context?.Acts.Any(x => x.ActNumber == (int) value);
+            return act == false ? ValidationResult.Success : new ValidationResult("Акт с таким номером уже существует.");
         }
     }
 }

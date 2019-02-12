@@ -16,7 +16,7 @@ namespace InventoryAccounting.Models.DB
         public Guid CompanyId { get; set; }
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]
-        //[ContractUnique]
+        [ContractUnique]
         [Display(Name = "Номер договора")]
         public int ContractNumber { get; set; }
         

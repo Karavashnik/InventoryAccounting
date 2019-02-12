@@ -15,9 +15,12 @@ namespace InventoryAccounting.Filters
             
             var context = (InventoryAccountingContext)validationContext
                 .GetService(typeof(InventoryAccountingContext));
-            var contract = context?.Contracts.FirstOrDefault(x => x.ContractNumber == (int) value);
-            
-            return contract == null ? ValidationResult.Success : new ValidationResult("Контракт с таким номером уже существует.");
+            if (context?.Contracts.Any(x => x.ContractNumber == (int) value && x.Id == contracts.Id) == true)
+            {
+                return ValidationResult.Success;
+            }
+            var contract = context?.Contracts.Any(x => x.ContractNumber == (int) value);
+            return contract == false ? ValidationResult.Success : new ValidationResult("Контракт с таким номером уже существует.");
         }
     }
 }

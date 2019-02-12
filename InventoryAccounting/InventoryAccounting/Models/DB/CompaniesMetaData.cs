@@ -14,7 +14,7 @@ namespace InventoryAccounting.Models.DB
         
         [Required(ErrorMessage = "Поле {0} обязательное.")]
         [Range(100000000, 999999999, ErrorMessage = "УНП должен состоять из 9 цифр")]
-        //[UnpUnique]
+        [UnpUnique]
         [Display(Name = "УНП")]
         public int Unp { get; set; }
         

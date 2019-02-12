@@ -15,9 +15,13 @@ namespace InventoryAccounting.Filters
             
             var context = (InventoryAccountingContext)validationContext
                 .GetService(typeof(InventoryAccountingContext));
-            var company = context?.Companies.FirstOrDefault(x => x.Unp == (int) value);
             
-            return company == null ? ValidationResult.Success : new ValidationResult("УНП уже существует.");
+            if (context?.Companies.Any(x => x.Unp == (int) value && x.Id == companies.Id) == true)
+            {
+                return ValidationResult.Success;
+            }
+            var company = context?.Companies.Any(x => x.Unp == (int) value);
+            return company == false ? ValidationResult.Success : new ValidationResult("УНП уже существует.");
         }
     }
 }

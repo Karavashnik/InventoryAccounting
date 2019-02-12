@@ -71,7 +71,7 @@ namespace InventoryAccounting.Controllers
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,InventoryNumber,Name,Description,Type,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
+        public async Task<IActionResult> Edit([Bind("Id,InventoryNumber,Name,Description,TypeId,PurchaseDate,ResponsiblePersonId,FactoryNumber,WriteOffDate,RoomId,ActId,WarrantyDate")] Tmc tmc)
         {
             try
             {

@@ -1,7 +1,9 @@
 ﻿$(function () {
     $(":input").inputmask();
-    function SetDataTable(table)
-    {
+    function SetDataTable(table) {
+        if ($.fn.dataTable.isDataTable('#main-table')) {
+            table = $('#main-table').DataTable();
+        } else {        
         table = $('#main-table').DataTable(
             {
                 select: false,
@@ -31,6 +33,7 @@
                 }
             }
         );
+        }
         table.columns.adjust().draw();
         $('label.toggle-vis').on( 'click', function (e) {
             e.preventDefault();

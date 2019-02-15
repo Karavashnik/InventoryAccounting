@@ -6,7 +6,7 @@
 
 <div class="container-fluid">
     <div class="row my-1">
-        <span asp-validation-for="Id" class="text-danger col-md-12"></span>
+        <span name="IdErrorMessage" asp-validation-for="Id" class="text-danger col-md-12"></span>
     </div>
     <div class="row my-1">
         <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Unp)</span>

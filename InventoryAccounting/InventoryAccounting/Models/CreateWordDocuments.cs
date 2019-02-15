@@ -19,10 +19,10 @@ namespace InventoryAccounting.Models
             strings.Add(new Tuple<string, string>("InventoryNumber", tmc.InventoryNumber.ToString()));
             strings.Add(new Tuple<string, string>("Name", tmc.Name));
             strings.Add(new Tuple<string, string>("Description", tmc.Description));
-            strings.Add(new Tuple<string, string>("PurchaseDate", tmc.PurchaseDate.ToString()));
             strings.Add(new Tuple<string, string>("FactoryNumber", tmc.FactoryNumber.ToString()));
-            strings.Add(new Tuple<string, string>("WriteOffDate", tmc.WriteOffDate.ToString()));
-            strings.Add(new Tuple<string, string>("WarrantyDate", tmc.WarrantyDate.ToString()));
+            strings.Add(new Tuple<string, string>("PurchaseDate", tmc.PurchaseDate.ToShortDateString()));
+            strings.Add(new Tuple<string, string>("WriteOffDate", tmc.WriteOffDate.HasValue ? tmc.WriteOffDate.Value.ToShortDateString() : ""));
+            strings.Add(new Tuple<string, string>("WarrantyDate", tmc.WarrantyDate.HasValue ? tmc.WarrantyDate.Value.ToShortDateString() : ""));
             strings.Add(new Tuple<string, string>("LastName", tmc.ResponsiblePerson.LastName));
             strings.Add(new Tuple<string, string>("FirstName", tmc.ResponsiblePerson.FirstName));
             strings.Add(new Tuple<string, string>("PersonnelNumber", tmc.ResponsiblePerson.PersonnelNumber.ToString()));
